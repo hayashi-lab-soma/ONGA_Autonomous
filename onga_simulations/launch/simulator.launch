@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- arguments -->
+	<arg name="model" default="$(find onga_simulations)/xacro/movebase_vlp16.xacro" />
+	<arg name="world_model" default="simple3.world" />
+	<!-- <arg name="rvizconfig" default="$(find onga_simulations)/rviz/simulator.rviz" /> -->
+	<arg name="gui_rviz" default="true" />
+	<arg name="gui_gazebo" default="true" />
+	<!-- parameters -->
+	<param name="robot_description" command="$(find xacro)/xacro $(arg model) --inorder" />
+	<rosparam command="load" file="$(find onga_simulations)/config/diff_drive_controller.yaml" ns="/dtw_robot" />
+	<rosparam command="load" file="$(find onga_simulations)/config/joint_state_controller.yaml" ns="/dtw_robot" />
+	<!-- spawn robot model -->
+	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model dtw_robot" />
+	<!-- robot state publishers -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="/dtw_robot" />
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" ns="/dtw_robot" args="diff_drive_controller joint_state_controller" />
+	<!--  -->
+	<!-- gazebo -->
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="use_sim_time" value="true" />
+		<arg name="gui" value="$(arg gui_gazebo)" />
+		<arg name="world_name" value="$(arg world_model)" />
+	</include>
+	<!--  -->
+	<!-- rviz -->
+	<!-- <node if="$(arg gui_rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" /> -->
+	<!-- <node name="robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering"/> -->
+</launch>

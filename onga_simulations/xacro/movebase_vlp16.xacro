@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="dtw_robot">
+	<include filename="$(find soma_mse)/xacro/movebase_macro.xacro" />
+	<!-- <include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro" /> -->
+	<!-- <include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" /> -->
+	<!-- empty link -->
+	<link name="base_link" />
+	<!--  -->
+	<body_macro parent="base_link" />
+	<wheel_macro prefix="left_wheel" parent="base_link" xyz="0.2 0.3 0.2" />
+	<wheel_macro prefix="right_wheel" parent="base_link" xyz="0.2 -0.3 0.2" />
+	<!--  -->
+	<!--  -->
+	<!-- <VLP-16>
+		<origin parent="base_link" xyz="0.25 0.0 0.7" rpy="0.0 0.0 0.0" />
+	</VLP-16> -->
+	<!--  -->
+	<!--  -->
+	<!-- <_d435>
+		<origin parent="base_link" xyz="1.0
+		 1.0 0.7" rpy="0.0 0.0 0.0"/>
+	</_d435> -->
+	<!--  -->
+	<!--  -->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>
+				/dtw_robot
+			</robotNamespace>
+			<robotSimType>
+				gazebo_ros_control/DefaultRobotHWSim
+				<robotSimType>
+					<legacyModeNS>
+						true
+					</legacyModeNS>
+				</robotSimType>
+			</robotSimType>
+		</plugin>
+	</gazebo>
+</robot>
