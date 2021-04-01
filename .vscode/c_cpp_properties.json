@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        // "/home/hayashi/catkin_ws/devel/include/**",
+        // "/opt/ros/melodic/include/**",
+        // "/home/hayashi/catkin_ws/src/fast_gicp/include/**",
+        // "/home/hayashi/catkin_ws/src/hdl_graph_slam/include/**",
+        // "/home/hayashi/catkin_ws/src/ndt_omp/include/**",
+        // "/home/hayashi/catkin_ws/src/sim1_lecture/include/**",
+        // "/home/hayashi/catkin_ws/src/soma_pkg/soma_mse/include/**",
+        // "/home/hayashi/catkin_ws/src/soma_pkg/soma_tools/include/**",
+        // "/home/hayashi/catkin_ws/src/viz_lecture/include/**",
+        "/home/hayashi/onga_ws/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}
