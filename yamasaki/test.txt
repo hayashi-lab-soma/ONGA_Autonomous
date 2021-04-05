@@ -1,5 +1,6 @@
 yamasaki
 
+<<<<<<< Updated upstream
 #######################changed by tsuji#############################
 
 import argparse
@@ -12,3 +13,6 @@ import mmcv
 import numpy as np
 
 ######################################################################
+=======
+hello 
+>>>>>>> Stashed changes
