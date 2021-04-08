@@ -1,7 +1,0 @@
-yamasaki
-
-import argparse
-hello
-my name is yamasaki
-import os
-import os.path as osp
