@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- arguments -->
+	<arg name="prefix" default="/home/hayashi/" />
+	<arg name="is_d400_topics" default="true" doc="" />
+    <arg name="is_t265_topics" default="true" doc="" />
+	<arg name="add_topics" default="" />
+	<!--
+	topic settings
+	-->
+	<!-- rgbd camera topics -->
+	<arg name="rgb_image_topics" default="/d400/color/image_raw" />
+	<arg name="depth_image_topics" default="/d400/depth/image_rect_raw /d400/aligned_depth_to_color/image_raw " />
+	<arg name="camera_info_topics" default="/d400/color/camera_info /d400/depth/camera_info " />
+	<arg name="points_topics" default="/d400/depth/color/points /d400/depth/filtered_points " />
+	<arg name="d400_topics" default="$(arg rgb_image_topics) $(arg depth_image_topics) $(arg camera_info_topics)" if="$(arg is_camera_topics)" />
+	<arg name="d400_topics" default="" unless="$(arg is_d400_topics)" />
+    <!-- rgbd camera topics -->
+    <arg name="odom_topics" default="/t265/odom/sample" />
+    <arg name="t265_topics" default="$(arg odom_topics)" />
+    <arg name="t265_topics" default="" unless="$(arg is_t265_topics)" />
+	<!-- robot topics -->
+	<arg name="robot_topics" default="tf tf_static" />
+	<!-- marge topics -->
+	<arg name="topics" default="$(arg d400_topics) $(arg t265_topics) $(arg robot_topics)" />
+	<!--
+	Run logging
+	-->
+	<node pkg="rosbag" type="record" name="onga_record" output="screen" args="-o $(arg prefix) $(arg topics) $(arg add_topics)">
+	</node>
+</launch>
