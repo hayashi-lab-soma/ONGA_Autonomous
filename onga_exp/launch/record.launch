@@ -13,7 +13,7 @@
 	<arg name="depth_image_topics" default="/d400/depth/image_rect_raw /d400/aligned_depth_to_color/image_raw " />
 	<arg name="camera_info_topics" default="/d400/color/camera_info /d400/depth/camera_info " />
 	<arg name="points_topics" default="/d400/depth/color/points /d400/depth/filtered_points " />
-	<arg name="d400_topics" default="$(arg rgb_image_topics) $(arg depth_image_topics) $(arg camera_info_topics)" if="$(arg is_camera_topics)" />
+	<arg name="d400_topics" default="$(arg rgb_image_topics) $(arg depth_image_topics) $(arg camera_info_topics)" if="$(arg is_d400_topics)" />
 	<arg name="d400_topics" default="" unless="$(arg is_d400_topics)" />
     <!-- rgbd camera topics -->
     <arg name="odom_topics" default="/t265/odom/sample" />
