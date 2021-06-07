@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <!--- Run Move Base -->  
+  <include file="$(find onga_navigation)/launch/move_base.launch">
+    <arg name="no_static_map" value="true"/>
+  </include>
+  
+</launch>
