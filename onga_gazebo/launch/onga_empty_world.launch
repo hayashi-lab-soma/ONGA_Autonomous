@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="world_name" default="worlds/empty.world"/>
+
+  <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED 1)"/>
+  <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED 0)"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <include file="$(find onga_gazebo)/launch/spawn_onga.launch">
+    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+    <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
+  </include>
+
+</launch>
