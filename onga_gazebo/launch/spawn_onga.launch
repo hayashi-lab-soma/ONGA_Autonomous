@@ -9,9 +9,9 @@
   <arg name="z" default="0.0"/>
   <arg name="yaw" default="0.0"/>
 
-  <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)"/>
-  <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED false)"/>
-  <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
+  <arg name="laser_enabled" default="$(optenv ONGA_LMS1XX_ENABLED false)"/>
+  <arg name="realsense_enabled" default="$(optenv ONGA_REALSENSE_ENABLED false)"/>
+  <arg name="urdf_extras" default="$(optenv ONGA_URDF_EXTRAS)"/>
 
   <!-- Optionally disable teleop control -->
   <arg name="joystick" default="true" />
@@ -36,7 +36,7 @@
     </group>
 
     <!-- For single master bringup, run robot control on the gazebo master -->
-    <!-- Note that husky_description/description.launch is already included in husky_control/control.launch. -->
+    <!-- Note that onga_description/description.launch is already included in onga_control/control.launch. -->
     <group unless="$(arg multimaster)">
       <include file="$(find onga_control)/launch/control.launch">
         <arg name="multimaster" value="$(arg multimaster)"/>

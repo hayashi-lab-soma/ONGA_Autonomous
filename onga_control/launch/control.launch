@@ -7,11 +7,11 @@
   <arg name="enable_ekf" default="$(optenv ENABLE_EKF true)"/>
 
   <arg name="config_extras"
-       default="$(eval optenv('HUSKY_CONFIG_EXTRAS', find('onga_control') + '/config/empty.yaml'))"/>
+       default="$(eval optenv('ONGA_CONFIG_EXTRAS', find('onga_control') + '/config/empty.yaml'))"/>
 
-  <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)"/>
-  <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED false)"/>
-  <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
+  <arg name="laser_enabled" default="$(optenv ONGA_LMS1XX_ENABLED false)"/>
+  <arg name="realsense_enabled" default="$(optenv ONGA_REALSENSE_ENABLED false)"/>
+  <arg name="urdf_extras" default="$(optenv ONGA_URDF_EXTRAS)"/>
 
   <include file="$(find multimaster_launch)/launch/multimaster_robot.launch" if="$(arg multimaster)">
     <arg name="gazebo_interface" value="$(find onga_control)/config/gazebo_interface.yaml" />
