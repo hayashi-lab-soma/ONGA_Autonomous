@@ -18,7 +18,15 @@ static:
 
 obstacles_laser:
     observation_sources: laser
-    laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true}
+    laser: 
+        sensor_frame: camera_realsense 
+        data_type: LaserScan
+        clearing: true
+        marking: true 
+        topic: realsense/scan 
+        inf_is_valid: true
+        obstacle_range: 5.5
+        raytrace_range: 6.0
 
 inflation:
     inflation_radius: 1.0
