@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="scan_topic" default="$(eval optenv('HUSKY_LASER_TOPIC', 'scan'))" />
+
+  <!--- Run gmapping -->
+  <include file="$(find onga_navigation)/launch/gmapping.launch">
+    <arg name="scan_topic" value="$(arg scan_topic)" />
+  </include>
+
+  <!--- Run Move Base -->
+  <include file="$(find onga_navigation)/launch/move_base.launch" />
+
+</launch>
