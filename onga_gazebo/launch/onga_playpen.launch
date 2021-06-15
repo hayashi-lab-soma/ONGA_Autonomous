@@ -1,7 +1,7 @@
 <launch>
 
-  <arg name="laser_enabled" default="$(optenv HUSKY_LASER_LMS1XX_ENABLED 1)"/>
-  <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED 0)"/>
+  <arg name="laser_enabled" default="$(optenv HUSKY_LASER_LMS1XX_ENABLED 0)"/>
+  <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED 1)"/>
 
   <include file="$(find onga_gazebo)/launch/playpen.launch" />
 
