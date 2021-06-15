@@ -1,39 +1,34 @@
-
 #include <ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/Empty.h>
+#include <geometry_msgs/Twist.h>
+
 
 ros::NodeHandle  nh;
 std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
-char hello[13] = "hello world!";
 
-void led_cb(const std_msgs::Bool& msg){
-  if(msg.data){
-    analogWrite(11, 255*0.0);
-    delay(1000);
-    analogWrite(11, 255*0.2);
-    delay(1000);
-    analogWrite(11, 255*0.4);
-    delay(1000);
-    analogWrite(11, 255*0.6);
-    delay(1000);
-    analogWrite(11, 255*0.8);
-    delay(1000);
-    analogWrite(11, 255*1.0);
-    delay(1000);
-  } else {
-    analogWrite(11, 255*0.0);
-  }
-
+void cmd_vel_cb(const geometry_msgs::Twist &cmd_vel){
+  printf("subscribed");
+  analogWrite(11, 255*0.0);
+  delay(100);
+  analogWrite(11, 255*0.5);
+  delay(100);
+  analogWrite(11, 255*1.0);
+  delay(100);
+  analogWrite(11, 255*0.5);
+  delay(100);
+  analogWrite(11, 255*0.0);
+  delay(100);
 }
-ros::Subscriber<std_msgs::Bool> sub0("led", &led_cb);
+
+ros::Subscriber<geometry_msgs::Twist>cmd_vel_sub("/onga_velocity_controller/cmd_vel", &cmd_vel_cb);
 
 void setup()
 {
   nh.initNode();
-  nh.advertise(chatter);
-  nh.subscribe(sub0);
+  // nh.subscribe(sub0);
+  nh.subscribe(cmd_vel_sub);
 
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(11, OUTPUT);
@@ -41,8 +36,6 @@ void setup()
 
 void loop()
 {
-  str_msg.data = hello;
-  chatter.publish( &str_msg );
   nh.spinOnce();
   delay(500);
 }
