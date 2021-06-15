@@ -9,8 +9,23 @@ ros::Publisher chatter("chatter", &str_msg);
 char hello[13] = "hello world!";
 
 void led_cb(const std_msgs::Bool& msg){
-  if(msg.data)digitalWrite(13, HIGH);
-  else digitalWrite(13, LOW);
+  if(msg.data){
+    analogWrite(11, 255*0.0);
+    delay(1000);
+    analogWrite(11, 255*0.2);
+    delay(1000);
+    analogWrite(11, 255*0.4);
+    delay(1000);
+    analogWrite(11, 255*0.6);
+    delay(1000);
+    analogWrite(11, 255*0.8);
+    delay(1000);
+    analogWrite(11, 255*1.0);
+    delay(1000);
+  } else {
+    analogWrite(11, 255*0.0);
+  }
+
 }
 ros::Subscriber<std_msgs::Bool> sub0("led", &led_cb);
 
@@ -21,7 +36,7 @@ void setup()
   nh.subscribe(sub0);
 
   pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(13, OUTPUT);
+  pinMode(11, OUTPUT);
 }
 
 void loop()
