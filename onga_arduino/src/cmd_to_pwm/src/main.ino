@@ -27,9 +27,7 @@ ros::Subscriber<geometry_msgs::Twist>cmd_vel_sub("/onga_velocity_controller/cmd_
 void setup()
 {
   nh.initNode();
-  // nh.subscribe(sub0);
   nh.subscribe(cmd_vel_sub);
-
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(11, OUTPUT);
 }
