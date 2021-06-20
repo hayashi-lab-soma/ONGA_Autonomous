@@ -2,7 +2,7 @@
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <!-- <arg name="world_name" value="$(find onga_gazebo)/worlds/clearpath_playpen.world"/> -->
-    <arg name="world_name" value="$(find onga_gazebo)/worlds/clearpath_playpen.world"/>
+    <arg name="world_name" value="$(find onga_gazebo)/worlds/simple_asphalt.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
