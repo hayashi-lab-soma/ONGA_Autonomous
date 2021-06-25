@@ -162,7 +162,7 @@ Visualization Manager:
         - Angle Tolerance: 0.1
           Class: rviz/Odometry
           Color: 85; 170; 255
-          Enabled: true
+          Enabled: false
           Keep: 100
           Length: 0.1
           Name: Odometry
@@ -194,7 +194,7 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.03
           Style: Flat Squares
-          Topic: /scan
+          Topic: /realsense_scan
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
@@ -324,7 +324,7 @@ Visualization Manager:
             Z: 0
           Topic: /move_base/DWAPlannerROS/local_plan
           Value: true
-      Enabled: false
+      Enabled: true
       Name: Navigation
   Enabled: true
   Global Options:
