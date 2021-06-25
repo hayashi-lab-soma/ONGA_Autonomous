@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="scan_topic" default="$(eval optenv('HUSKY_LASER_TOPIC', 'scan'))" />
+  <arg name="scan_topic" default="$(eval optenv('HUSKY_LASER_TOPIC', 'realsense_scan'))" />
 
   <!--- Run gmapping -->
   <include file="$(find onga_navigation)/launch/gmapping.launch">
