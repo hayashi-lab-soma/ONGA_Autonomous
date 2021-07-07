@@ -1,4 +1,4 @@
-# ONGA_Autonomou
+# ONGA_Autonomous
 壁面吸引ロボット自律化に関するROSパッケージ
 
 ## 使用するセンサ
