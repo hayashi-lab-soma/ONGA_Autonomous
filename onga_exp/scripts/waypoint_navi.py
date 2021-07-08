@@ -11,7 +11,7 @@ from math import pi
 
 class WpNavi():
     def __init__(self):
-        self.way_point = [[-2.0, 3.0,-0.5 * pi], [ 3.0, 3.0, 0.0 * pi], [ 3.0,-4.5, 0.5 * pi],[ 0.0,-4.5, 1.0 * pi], [0.0, 0.0, 0.0 * pi], [999, 999, 999]]
+        self.way_point = [[2.0, 3.0,0.0 * pi], [ 3.0, 3.0, 0.0 * pi], [ 3.0,2.0, 0.0 * pi], [0.0, 0.0, 0.0 * pi], [999, 999, 999]]
         self.ac = actionlib.SimpleActionClient('move_base', MoveBaseAction)
         self.goal = MoveBaseGoal()
         rospy.on_shutdown(self.shutdown)
