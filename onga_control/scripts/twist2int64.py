@@ -15,8 +15,8 @@ class Twist2int64():
     def main(self):
         rospy.init_node("twist2int", anonymous= True)
         rospy.Subscriber('/onga_velocity_controller/cmd_vel', Twist, self.callback)
-        self.pub_right = rospy.Publisher('right_motor/cmd_vel', Int64, queue_size=10)#name, topic_type, size
-        self.pub_left = rospy.Publisher('left_motor/cmd_vel', Int64, queue_size=10)#name, topic_type, size
+        self.pub_right = rospy.Publisher('right_motor/cmd_rpm', Int64, queue_size=10)#name, topic_type, size
+        self.pub_left = rospy.Publisher('left_motor/cmd_rpm', Int64, queue_size=10)#name, topic_type, size
         rospy.spin()
 
     def callback(self, message):
