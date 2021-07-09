@@ -153,22 +153,25 @@ class DetectCentroid(object):
             x,y,w,h = cv2.boundingRect(c)
             cv2.rectangle(color_image, (x, y), (x + w, y + h), color=(0, 255, 0), thickness=2)
 
-            depth_point = self.depthToPoints(depth_image=depth_image,U=cX,V=cY)
+            try:
+                depth_point = self.depthToPoints(depth_image=depth_image,U=cX,V=cY)
 
-            ##--- Marker
-            new_pose = Pose()
-            new_pose.position.x     = depth_point[0]
-            new_pose.position.y     = depth_point[1]
-            new_pose.position.z     = depth_point[2]
-            new_pose.orientation.x  = 0.0
-            new_pose.orientation.y  = 0.0
-            new_pose.orientation.z  = 0.0
-            new_pose.orientation.w  = 1                
-            ##--- END : Marker
+                ##--- Marker
+                new_pose = Pose()
+                new_pose.position.x     = depth_point[0]
+                new_pose.position.y     = depth_point[1]
+                new_pose.position.z     = depth_point[2]
+                new_pose.orientation.x  = 0.0
+                new_pose.orientation.y  = 0.0
+                new_pose.orientation.z  = 0.0
+                new_pose.orientation.w  = 1                
+                ##--- END : Marker
 
-            send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
-            # rospy.loginfo("centroid", cX, cY)
-
+                send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
+                # rospy.loginfo("centroid", cX, cY)
+            except:
+                pass
+                
     def Process(self):
         rospy.init_node("detect_centroid", anonymous=True)
         rospy.Subscriber(self.CAMINFO['topic'], self.CAMINFO['msg'], self.camInfoCallback)
