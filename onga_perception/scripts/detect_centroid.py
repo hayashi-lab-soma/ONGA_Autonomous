@@ -16,7 +16,8 @@ from geometry_msgs.msg import Point,Pose
 
 def send_traj_point_marker(marker_pub, pose):
     marker = Marker()
-    marker.header.frame_id = "/camera_color_optical_frame"
+    # marker.header.frame_id = "/camera_color_optical_frame"
+    marker.header.frame_id = "/odom"
     marker.header.stamp = rospy.Time.now()
     marker.ns = "traj_point" 
     marker.id = 0
@@ -37,11 +38,18 @@ class DetectCentroid(object):
     def __init__(self):
         rospy.loginfo("initialize DetectionCentroid")
 
-        self.CAMINFO = {'topic': '/camera/color/camera_info', 'msg': CameraInfo}
-        self.COLOR = {'topic': '/camera/color/image_raw', 'msg': Image}
-        self.DEPTH = {'topic': '/camera/aligned_depth_to_color/image_raw', 'msg': Image}
-        self.H = 720
-        self.W = 1280
+        ## For real device
+        # self.CAMINFO = {'topic': '/camera/color/camera_info', 'msg': CameraInfo}
+        # self.COLOR = {'topic': '/camera/color/image_raw', 'msg': Image}
+        # self.DEPTH = {'topic': '/camera/aligned_depth_to_color/image_raw', 'msg': Image}
+        
+        ## For simulation
+        self.CAMINFO = {'topic': '/realsense/color/camera_info', 'msg': CameraInfo}
+        self.COLOR = {'topic': '/realsense/color/image_raw', 'msg': Image}
+        self.DEPTH = {'topic': '/realsense/depth/image_rect_raw', 'msg': Image}
+        self.H = 640
+        self.W = 480
+
         self.header = Header()
         self.fields = [PointField('x', 0, 7, 1), PointField('y', 4, 7, 1), PointField('z', 8, 7, 1), PointField('rgb', 16, 7, 1)]
         self.points = []
@@ -149,7 +157,7 @@ class DetectCentroid(object):
             c = max(contours, key = cv2.contourArea)
             cX, cY = self.centroid(c)
             cv2.circle(color_image, (cX, cY), 5, (0, 0, 0), -1)
-            print(f'x = {cX}, y = {cY}')
+            # print(f'x = {cX}, y = {cY}')
             x,y,w,h = cv2.boundingRect(c)
             cv2.rectangle(color_image, (x, y), (x + w, y + h), color=(0, 255, 0), thickness=2)
 
