@@ -102,12 +102,12 @@ class DetectCentroid(object):
     def window(self):
         cv2.namedWindow("Range HSV")
         cv2.resizeWindow("Range HSV", 500, 350)
-        cv2.createTrackbar("HUE Min", "Range HSV", 0,180, self.empty)
-        cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)
-        cv2.createTrackbar("SAT Min", "Range HSV", 0,255, self.empty)
-        cv2.createTrackbar("SAT Max", "Range HSV", 255,255, self.empty)
+        cv2.createTrackbar("HUE Min", "Range HSV", 105,180, self.empty)
+        cv2.createTrackbar("HUE Max", "Range HSV", 168,180, self.empty)
+        cv2.createTrackbar("SAT Min", "Range HSV", 22,255, self.empty)
+        cv2.createTrackbar("SAT Max", "Range HSV", 149,255, self.empty)
         cv2.createTrackbar("VALUE Min", "Range HSV", 0,255, self.empty)
-        cv2.createTrackbar("VALUE Max", "Range HSV", 255,255, self.empty)
+        cv2.createTrackbar("VALUE Max", "Range HSV", 50,255, self.empty)
 
     def get_hsvcentroid(self):
         # bgrLower = np.array([30, 80, 150])    
@@ -154,14 +154,14 @@ class DetectCentroid(object):
 
         contours, hierarchy = cv2.findContours(mask_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) != 0:
-            c = max(contours, key = cv2.contourArea)
-            cX, cY = self.centroid(c)
-            cv2.circle(color_image, (cX, cY), 5, (0, 0, 0), -1)
-            # print(f'x = {cX}, y = {cY}')
-            x,y,w,h = cv2.boundingRect(c)
-            cv2.rectangle(color_image, (x, y), (x + w, y + h), color=(0, 255, 0), thickness=2)
-
             try:
+                c = max(contours, key = cv2.contourArea)
+                cX, cY = self.centroid(c)
+                cv2.circle(color_image, (cX, cY), 5, (0, 0, 0), -1)
+                # print(f'x = {cX}, y = {cY}')
+                x,y,w,h = cv2.boundingRect(c)
+                cv2.rectangle(color_image, (x, y), (x + w, y + h), color=(0, 255, 0), thickness=2)
+
                 depth_point = self.depthToPoints(depth_image=depth_image,U=cX,V=cY)
 
                 ##--- Marker
