@@ -10,14 +10,12 @@ class Twist2int64():
         self.command_left = Int64()
         self.command_right = Int64()
         self.received_twist = None
-        
 
-    def main(self):
         rospy.init_node("twist2int", anonymous= True)
         rospy.Subscriber('/onga_velocity_controller/cmd_vel', Twist, self.callback)
         self.pub_right = rospy.Publisher('right_motor/cmd_rpm', Int64, queue_size=10)#name, topic_type, size
         self.pub_left = rospy.Publisher('left_motor/cmd_rpm', Int64, queue_size=10)#name, topic_type, size
-        rospy.spin()
+        
 
     def callback(self, message):
         rospy.loginfo("sub")
@@ -26,13 +24,13 @@ class Twist2int64():
         self.pub_right.publish(self.command_right)
         self.pub_left.publish(self.command_left)
 
-    def twist2rpm(self, received_data):#convert to speed
+    def twist2rpm(self, data):#convert to speed
         #(m/s, rad/s)
         wheeles_size = 0.075#wheel size
         axle_length = 0.35#axle_size(2d)
 
-        v = received_data.linear.x#(m/s)
-        omega = received_data.angular.z#(rad/s)
+        v = data.linear.x#(m/s)
+        omega = data.angular.z#(rad/s)
 
         v_r = (omega*axle_length + 2*v)/2
         v_l = (omega*axle_length - 2*v)/(-2)
@@ -51,7 +49,7 @@ class Twist2int64():
 if __name__ == "__main__":
     try:
         twist2int64 = Twist2int64()
-        twist2int64.main()
+        rospy.spin()
 
     except rospy.ROSInterruptException:
         pass
