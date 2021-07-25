@@ -11,7 +11,7 @@
 * RealsenseSDK 2.0 
 
 ## セットアップ方法
-2021/07/07現在
+最終更新日：2021/07/25
 * Husky ROSパッケージのインストール
     ```
     sudo apt install ros-melodic-husky-gazebo ros-melodic-husky-viz ros-melodic-husky-control
@@ -43,6 +43,26 @@
     sudo apt install python-catkin-tools
     ```
 
+* Aruduino セットアップ \
+    本パッケージでは統合開発環境ArduinoIDEを使用しない。\
+    Platformioを使用してコンパイル、Aruduinoへの書き込みを行う
+    ```
+    ##platformioのインストール##
+
+    ##pipのアップグレード
+    pip3 install --upgrade pip
+    
+    ##platformioをインストール
+    pip3 install pltformio
+    
+    ##インストール完了の確認
+    pio --version
+    #PlatformIO Core, version 5.1.1
+    ```
+    ```
+    ##Arduinoへのソース書き込み##
+    rosrun onga_arduino write_cmd2pwm.sh
+    ```
 
 ## パッケージ内容
 ### ・onga_arduino
@@ -92,9 +112,17 @@ Rvizによる描画パッケージ
     ```
     ・機体のコントロール 
     ```
-    ##terminalその１で##
+    ##terminalその３で##
     roslaunch onga_navigation move_base_mapless_demo.launch
     ```
 
 
 ### 実機による検証
+1. Aruduinoを動かしてみる
+    ```
+    #terminal その１
+    roscore
+
+    #terminal その２
+    rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0
+    ```
