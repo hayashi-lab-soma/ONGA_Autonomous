@@ -210,6 +210,7 @@ class DetectCentroid(object):
                 x,y,w,h = cv2.boundingRect(c)
                 cv2.rectangle(color_image, (x, y), (x + w, y + h), color=(0, 255, 0), thickness=2)
                 depth_point = self.depthToPoints(depth_image=depth_image,U=cX,V=cY)
+                print(hierarchy)
 
                 # cv2.circle(color_image, (x,y+h), 5, (0,0,0), -1) #left bottom
                 # cv2.circle(color_image, (x+w,y+h), 5, (0,0,0), -1) #right bottom
@@ -272,8 +273,8 @@ class DetectCentroid(object):
 
                 print(f"Plane equation: {a:.5f}x + {b:.5f}y + {c:.5f}z + {d:.5f} = 0")
 
-                x1 = -a*y1/b
-                x2 = -a*y2/b
+                x1 = -c*y1/a
+                x2 = -c*y2/a
                 ##--- LINE Marker
                 line_pose = Pose()
                 line_pose.position.y     = 0.0
@@ -300,7 +301,7 @@ class DetectCentroid(object):
                 second_line_point.x = x2
                 line.append(second_line_point)
                 ##--- END : LINE Marker
-                send_traj_line_marker(marker_pub=self.object_pub, pose=line_pose, points=line)
+                send_traj_line_marker(marker_pub=self.line_pub, pose=line_pose, points=line)
 
             except:
                 pass
