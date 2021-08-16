@@ -17,7 +17,7 @@
     <model name="ColorModel">
       <static>true</static>
       <link name="link3">
-        <pose>3 0 0 0 0 0</pose>
+        <pose>5 0 0 0 0 0</pose>
         <collision name="body_collision">
           <geometry>
             <box>
