@@ -84,7 +84,7 @@ class DetectCentroid(object):
         self.aligned_image  = np.empty((self.H, self.W), dtype=np.uint8)
         self.mask           = np.empty((self.H, self.W), dtype=np.bool)
         self.mask_image     = np.empty((self.H, self.W), dtype=np.uint8)
-        self.image_binary   = np.empty((self.H, self.W), dtype=np.uint8)
+        self.max_mask   = np.empty((self.H, self.W), dtype=np.uint8)
         self.mask_depth     = np.empty((self.H, self.W), dtype=np.uint8)
         self.rgb_red = 0xff0000
 
@@ -227,12 +227,13 @@ class DetectCentroid(object):
         result = cv2.bitwise_and(color_image, color_image, mask=mask_image)
 
         cv2.imshow("RGB", color_image)
-        cv2.imshow("MASKbw", result)
+        cv2.imshow("MASK IN RGB", result)
         cv2.imshow("MASK", mask_image)
         cv2.waitKey(1)
         
         contours, hierarchy = cv2.findContours(mask_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        # image_binary = self.image_binary
+        # max_mask = self.max_mask
+        max_mask = np.zeros_like(mask_image)
 
         if len(contours) != 0:
             try:
@@ -242,9 +243,9 @@ class DetectCentroid(object):
                 x,y,w,h = cv2.boundingRect(c)
                 cv2.rectangle(color_image, (x, y), (x + w, y + h), color=(0, 255, 0), thickness=2)
                 depth_point = self.depthToPoints(depth_image=depth_image,U=cX,V=cY)
-                # cv2.drawContours(image_binary, [max(contours, key = cv2.contourArea)], -1, (255, 255, 255), -1)
-                # cv2.imshow('Small Contour', image_binary)
-                # cv2.waitKey(1)
+                cv2.drawContours(max_mask, [max(contours, key = cv2.contourArea)], -1, (255, 255, 255), -1)
+                cv2.imshow('MAX MASK', max_mask)
+                cv2.waitKey(1)
 
                 ##--- Marker
                 ######################base_link######################
@@ -255,10 +256,10 @@ class DetectCentroid(object):
                 ######################base_link######################
 
                 ######################camera_realsense_gazebo######################
-                new_pose = Pose()
-                new_pose.position.x     = depth_point[0]*1000  
-                new_pose.position.y     = depth_point[1]*1000
-                new_pose.position.z     = depth_point[2]*1000
+                # new_pose = Pose()
+                # new_pose.position.x     = depth_point[0]*1000  
+                # new_pose.position.y     = depth_point[1]*1000
+                # new_pose.position.z     = depth_point[2]*1000
                 ######################camera_realsense_gazebo######################
 
                 ######################camera_color_optical_frame######################
@@ -274,64 +275,67 @@ class DetectCentroid(object):
                 new_pose.orientation.w  = 1
                 ##--- END : Marker
 
-                print(f'x = {new_pose.position.x}, y = {new_pose.position.y}, z = {new_pose.position.z}')
-                send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
+                if depth_point[0]!=0 and depth_point[1]!=0 and depth_point[2]!=0:
+                    print(f'x = {new_pose.position.x}, y = {new_pose.position.y}, z = {new_pose.position.z}')
+                    send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
 
-                masked_depth = np.zeros((self.H, self.W), dtype=np.uint16)
-                mask_int = mask_image.astype(np.uint16)*255
-                # mask_int = image_binary.astype(np.uint16)*255
-                ret, thresh = cv2.threshold(mask_int, 127, 255, 0)
-                masked_depth[np.nonzero(thresh)] = depth_image[np.nonzero(thresh)]
-                points = self.depthToPointcloud(masked_depth) #* 1000
-                self.publishPointcloud(self.pc_pub_karaage, points, self.rgb_red)
+                    masked_depth = np.zeros((self.H, self.W), dtype=np.uint16)
+                    # mask_int = mask_image.astype(np.uint16)*255
+                    mask_int = max_mask.astype(np.uint16)*255
+                    ret, thresh = cv2.threshold(mask_int, 127, 255, 0)
+                    masked_depth[np.nonzero(thresh)] = depth_image[np.nonzero(thresh)]
+                    points = self.depthToPointcloud(masked_depth) #* 1000
+                    self.publishPointcloud(self.pc_pub_karaage, points, self.rgb_red)
 
-                pcd = o3d.geometry.PointCloud()
-                pcd.points = o3d.utility.Vector3dVector(points)
-                downpcd = pcd.voxel_down_sample(voxel_size=0.05)
-                # pcd = o3d.io.read_point_cloud(points)
-                plane_model, inliers = downpcd.segment_plane(distance_threshold=5.0,
-                                                        ransac_n=5,#gazebo : 50
-                                                        num_iterations=1000)
-                [a, b, c, d] = plane_model
-                # o3d.visualization.draw_geometries([downpcd])
+                    pcd = o3d.geometry.PointCloud()
+                    pcd.points = o3d.utility.Vector3dVector(points)
+                    downpcd = pcd.voxel_down_sample(voxel_size=0.05)
+                    # pcd = o3d.io.read_point_cloud(points)
+                    plane_model, inliers = downpcd.segment_plane(distance_threshold=5.0,
+                                                            ransac_n=5,#gazebo : 50
+                                                            num_iterations=1000)
+                    [a, b, c, d] = plane_model
+                    # o3d.visualization.draw_geometries([downpcd])
 
-                print(f"Plane equation: {a:.5f}x + {b:.5f}y + {c:.5f}z + {d:.5f} = 0")
+                    print(f"Plane equation: {a:.5f}x + {b:.5f}y + {c:.5f}z + {d:.5f} = 0")
 
-                z1 = depth_point[2]#*1000
-                z2 = 0
-                x1 = depth_point[0]#*1000#-c*y1/a
-                # x2 = a*z2/b
-                x2 = -(b*(z1-z2)/a+x1)
-                print(f'x2{x2}')
-                ##--- LINE Marker
-                line_pose = Pose()
-                line_pose.position.y     = 0.0
-                line_pose.position.z     = 0.0
-                line_pose.position.x     = 0.0
+                    z1 = depth_point[2]#*1000
+                    z2 = 0
+                    x1 = depth_point[0]#*1000
+                    # x2 = -(b*(z1-z2)/a+x1)
+                    # x2 = (x1-a)/(c-z1)+a
+                    x2 = x1 - a*z1/c
+                    ##--- LINE Marker
+                    line_pose = Pose()
+                    line_pose.position.y     = 0.0
+                    line_pose.position.z     = 0.0
+                    line_pose.position.x     = 0.0
 
-                line_pose.orientation.x  = 0.0
-                line_pose.orientation.y  = 0.0
-                line_pose.orientation.z  = 0.0
-                line_pose.orientation.w  = 1
+                    line_pose.orientation.x  = 0.0
+                    line_pose.orientation.y  = 0.0
+                    line_pose.orientation.z  = 0.0
+                    line_pose.orientation.w  = 1
 
-                # marker line points
-                line = []
-                # first point
-                first_line_point = Point()
-                first_line_point.y = 0
-                first_line_point.z = z1#abs(depth_point[1]*1000)
-                first_line_point.x = x1
-                line.append(first_line_point)
-                # second point
-                second_line_point = Point()
-                second_line_point.y = 0
-                second_line_point.z = z2#abs(depth_point[1]*1000)
-                second_line_point.x = x2
-                line.append(second_line_point)
-                ##--- END : LINE Marker
-                send_traj_line_marker(marker_pub=self.line_pub, pose=line_pose, points=line)
+                    # marker line points
+                    line = []
+                    # first point
+                    first_line_point = Point()
+                    first_line_point.y = 0
+                    first_line_point.z = z1
+                    first_line_point.x = x1
+                    line.append(first_line_point)
+                    # second point
+                    second_line_point = Point()
+                    second_line_point.y = 0
+                    second_line_point.z = z2
+                    second_line_point.x = x2
+                    line.append(second_line_point)
+                    ##--- END : LINE Marker
+                    send_traj_line_marker(marker_pub=self.line_pub, pose=line_pose, points=line)
+                    print("PROCESS SUCCEEDED")
 
             except:
+                print("PROCESS FAILED")
                 pass
                 
     def Process(self):
