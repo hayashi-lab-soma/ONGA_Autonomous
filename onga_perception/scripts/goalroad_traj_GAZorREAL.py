@@ -18,62 +18,38 @@ import struct
 import open3d as o3d
 # from tf.msg import tfMessage
 
-def send_traj_point_marker(marker_pub, pose):
-    marker = Marker()
-    marker.header.frame_id = "/camera_color_optical_frame"
-    # marker.header.frame_id = "/camera_realsense_gazebo"
-    marker.header.stamp = rospy.Time.now()
-    marker.ns = "traj_point" 
-    marker.id = 0
-    marker.type = Marker.SPHERE
-    marker.action = Marker.ADD
-    marker.pose = pose
-    marker.scale.x = 0.02 #0.2(gazebo)
-    marker.scale.y = 0.02
-    marker.scale.z = 0.02
-    marker.color.r = 0.04
-    marker.color.g = 0.68
-    marker.color.b = 0.5
-    marker.color.a = 1.0
-    marker.lifetime = rospy.Duration(0.3,0)
-    marker_pub.publish(marker)
-
-def send_traj_line_marker(marker_pub, pose, points):
-    marker = Marker()
-    marker.header.frame_id = "/camera_color_optical_frame"
-    # marker.header.frame_id = "/camera_realsense_gazebo"
-    marker.header.stamp = rospy.Time.now()
-    marker.ns = "traj_point" 
-    marker.id = 0
-    marker.type = Marker.LINE_STRIP
-    marker.action = Marker.ADD
-    marker.pose = pose
-    marker.points = points
-    marker.scale.x = 0.02
-    marker.scale.y = 0.02
-    marker.scale.z = 0.02
-    marker.color.r = 1.1
-    marker.color.g = 1.1
-    marker.color.b = 1.1
-    marker.color.a = 1.0
-    marker.lifetime = rospy.Duration(0.3,0)
-    marker_pub.publish(marker)
-
 class DetectCentroid(object):
-    def __init__(self):
+    def __init__(self, use_gazebo=bool):
         rospy.loginfo("initialize DetectionCentroid")
 
-        ## For real device
-        self.CAMINFO = {'topic': '/camera/color/camera_info', 'msg': CameraInfo}
-        self.COLOR = {'topic': '/camera/color/image_raw', 'msg': Image}
-        self.DEPTH = {'topic': '/camera/aligned_depth_to_color/image_raw', 'msg': Image}
-        
-        ## For simulation
-        # self.CAMINFO = {'topic': '/realsense/color/camera_info', 'msg': CameraInfo}
-        # self.COLOR = {'topic': '/realsense/color/image_raw', 'msg': Image}
-        # self.DEPTH = {'topic': '/realsense/depth/image_rect_raw', 'msg': Image}
-        self.H = 720#480
-        self.W = 1280#640
+        self.use_gazebo = use_gazebo
+
+        if self.use_gazebo:
+            "roslaunch onga_gazebo product_sim.launch"
+
+            rospy.loginfo("using gazebo")
+            ## For simulation
+            self.CAMINFO = {'topic': '/realsense/color/camera_info', 'msg': CameraInfo}
+            self.COLOR = {'topic': '/realsense/color/image_raw', 'msg': Image}
+            self.DEPTH = {'topic': '/realsense/depth/image_rect_raw', 'msg': Image}
+            self.frame_id = "/camera_realsense_gazebo"
+            self.H = 480
+            self.W = 640
+            self.scale = 1000
+            self.marker_scale = 0.2
+        else:
+            "roslaunch realsense2_camera rs_rgbd.launch"
+
+            rospy.loginfo("using realsense D400 series")
+            ## For real device
+            self.CAMINFO = {'topic': '/camera/color/camera_info', 'msg': CameraInfo}
+            self.COLOR = {'topic': '/camera/color/image_raw', 'msg': Image}
+            self.DEPTH = {'topic': '/camera/aligned_depth_to_color/image_raw', 'msg': Image}
+            self.frame_id = "/camera_color_optical_frame"
+            self.H = 720
+            self.W = 1280
+            self.scale = 1
+            self.marker_scale = 0.02
 
         self.header = Header()
         self.fields = [PointField('x', 0, 7, 1), PointField('y', 4, 7, 1), PointField('z', 8, 7, 1), PointField('rgb', 16, 7, 1)]
@@ -105,6 +81,46 @@ class DetectCentroid(object):
         self.fx = msg.K[0]
         self.fy = msg.K[4] 
         self.model = msg.distortion_model
+
+    def send_traj_point_marker(self, marker_pub, pose):
+        marker = Marker()
+        marker.header.frame_id = self.frame_id
+        # marker.header.frame_id = "/camera_realsense_gazebo"
+        marker.header.stamp = rospy.Time.now()
+        marker.ns = "traj_point" 
+        marker.id = 0
+        marker.type = Marker.SPHERE
+        marker.action = Marker.ADD
+        marker.pose = pose
+        marker.scale.x = self.marker_scale
+        marker.scale.y = self.marker_scale
+        marker.scale.z = self.marker_scale
+        marker.color.r = 0.04
+        marker.color.g = 0.68
+        marker.color.b = 0.5
+        marker.color.a = 1.0
+        marker.lifetime = rospy.Duration(0.3,0)
+        marker_pub.publish(marker)
+
+    def send_traj_line_marker(self, marker_pub, pose, points):
+        marker = Marker()
+        marker.header.frame_id = self.frame_id
+        marker.header.stamp = rospy.Time.now()
+        marker.ns = "traj_point" 
+        marker.id = 0
+        marker.type = Marker.LINE_STRIP
+        marker.action = Marker.ADD
+        marker.pose = pose
+        marker.points = points
+        marker.scale.x = self.marker_scale
+        marker.scale.y = self.marker_scale
+        marker.scale.z = self.marker_scale
+        marker.color.r = 1.1
+        marker.color.g = 1.1
+        marker.color.b = 1.1
+        marker.color.a = 1.0
+        marker.lifetime = rospy.Duration(0.3,0)
+        marker_pub.publish(marker)
 
     def posecallback(self,msg):
         pass
@@ -148,8 +164,7 @@ class DetectCentroid(object):
     def publishPointcloud(self, pc_pub, points, color):
         points_color = self.addColorToPoints(points, color)
         header = self.header
-        # header.frame_id = "/camera_realsense_gazebo"
-        header.frame_id = "/camera_color_optical_frame"
+        header.frame_id = self.frame_id
         header.stamp = rospy.Time.now()
         pc = point_cloud2.create_cloud(header, self.fields, points_color)
         pc_pub.publish(pc)
@@ -170,41 +185,44 @@ class DetectCentroid(object):
     def window(self):
         cv2.namedWindow("Range HSV")
         cv2.resizeWindow("Range HSV", 500, 350)
-        ######################gray_object######################
-        # cv2.createTrackbar("HUE Min", "Range HSV", 2,180, self.empty)#105,180 orange corn
-        # cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
-        # cv2.createTrackbar("SAT Min", "Range HSV", 0,255, self.empty)#22,255
-        # cv2.createTrackbar("SAT Max", "Range HSV", 235,255, self.empty)#149,255
-        # cv2.createTrackbar("VALUE Min", "Range HSV",13,255, self.empty)#0,255
-        # cv2.createTrackbar("VALUE Max", "Range HSV", 147,255, self.empty)#50,255
-        ######################gray_object######################
 
-        # ######################yellow_landmark######################
-        # cv2.createTrackbar("HUE Min", "Range HSV", 22,180, self.empty)#105,180 orange corn
-        # cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
-        # cv2.createTrackbar("SAT Min", "Range HSV", 24,255, self.empty)#22,255
-        # cv2.createTrackbar("SAT Max", "Range HSV", 237,255, self.empty)#149,255
-        # cv2.createTrackbar("VALUE Min", "Range HSV",0,255, self.empty)#0,255
-        # cv2.createTrackbar("VALUE Max", "Range HSV", 19,255, self.empty)#50,255
-        # ######################yellow_landmark######################
+        if self.use_gazebo:
+            ######################gray_object######################
+            # cv2.createTrackbar("HUE Min", "Range HSV", 2,180, self.empty)#105,180 orange corn
+            # cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
+            # cv2.createTrackbar("SAT Min", "Range HSV", 0,255, self.empty)#22,255
+            # cv2.createTrackbar("SAT Max", "Range HSV", 235,255, self.empty)#149,255
+            # cv2.createTrackbar("VALUE Min", "Range HSV",13,255, self.empty)#0,255
+            # cv2.createTrackbar("VALUE Max", "Range HSV", 147,255, self.empty)#50,255
+            ######################gray_object######################
 
-        # ######################green_jetson_case######################
-        # cv2.createTrackbar("HUE Min", "Range HSV", 64,180, self.empty)#105,180 orange corn
-        # cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
-        # cv2.createTrackbar("SAT Min", "Range HSV", 182,255, self.empty)#22,255
-        # cv2.createTrackbar("SAT Max", "Range HSV", 255,255, self.empty)#149,255
-        # cv2.createTrackbar("VALUE Min", "Range HSV",96,255, self.empty)#0,255
-        # cv2.createTrackbar("VALUE Max", "Range HSV", 186,255, self.empty)#50,255
-        # ######################green_jetson_case######################
+            # ######################yellow_landmark######################
+            cv2.createTrackbar("HUE Min", "Range HSV", 22,180, self.empty)#105,180 orange corn
+            cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
+            cv2.createTrackbar("SAT Min", "Range HSV", 24,255, self.empty)#22,255
+            cv2.createTrackbar("SAT Max", "Range HSV", 237,255, self.empty)#149,255
+            cv2.createTrackbar("VALUE Min", "Range HSV",0,255, self.empty)#0,255
+            cv2.createTrackbar("VALUE Max", "Range HSV", 19,255, self.empty)#50,255
+            # ######################yellow_landmark######################
 
-        ######################under_graduate_cirtification######################
-        cv2.createTrackbar("HUE Min", "Range HSV", 15,180, self.empty)#105,180 orange corn
-        cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
-        cv2.createTrackbar("SAT Min", "Range HSV", 31,255, self.empty)#22,255
-        cv2.createTrackbar("SAT Max", "Range HSV", 138,255, self.empty)#149,255
-        cv2.createTrackbar("VALUE Min", "Range HSV",0,255, self.empty)#0,255
-        cv2.createTrackbar("VALUE Max", "Range HSV", 19,255, self.empty)#50,255
-        ######################under_graduate_cirtification######################
+        else:
+            # ######################green_jetson_case######################
+            # cv2.createTrackbar("HUE Min", "Range HSV", 64,180, self.empty)#105,180 orange corn
+            # cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
+            # cv2.createTrackbar("SAT Min", "Range HSV", 182,255, self.empty)#22,255
+            # cv2.createTrackbar("SAT Max", "Range HSV", 255,255, self.empty)#149,255
+            # cv2.createTrackbar("VALUE Min", "Range HSV",96,255, self.empty)#0,255
+            # cv2.createTrackbar("VALUE Max", "Range HSV", 186,255, self.empty)#50,255
+            # ######################green_jetson_case######################
+
+            #####################under_graduate_cirtification######################
+            cv2.createTrackbar("HUE Min", "Range HSV", 15,180, self.empty)#105,180 orange corn
+            cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
+            cv2.createTrackbar("SAT Min", "Range HSV", 31,255, self.empty)#22,255
+            cv2.createTrackbar("SAT Max", "Range HSV", 138,255, self.empty)#149,255
+            cv2.createTrackbar("VALUE Min", "Range HSV",0,255, self.empty)#0,255
+            cv2.createTrackbar("VALUE Max", "Range HSV", 19,255, self.empty)#50,255
+            #####################under_graduate_cirtification######################
 
     def get_hsvcentroid(self):
         h_min = cv2.getTrackbarPos("HUE Min", "Range HSV")
@@ -248,26 +266,10 @@ class DetectCentroid(object):
                 cv2.waitKey(1)
 
                 ##--- Marker
-                ######################base_link######################
-                # new_pose = Pose()
-                # new_pose.position.y     = -depth_point[0]*1000  
-                # new_pose.position.z     = abs(depth_point[1]*1000)
-                # new_pose.position.x     = depth_point[2]*1000
-                ######################base_link######################
-
-                ######################camera_realsense_gazebo######################
-                # new_pose = Pose()
-                # new_pose.position.x     = depth_point[0]*1000  
-                # new_pose.position.y     = depth_point[1]*1000
-                # new_pose.position.z     = depth_point[2]*1000
-                ######################camera_realsense_gazebo######################
-
-                ######################camera_color_optical_frame######################
                 new_pose = Pose()
-                new_pose.position.x     = depth_point[0]  
-                new_pose.position.y     = depth_point[1]
-                new_pose.position.z     = depth_point[2]
-                ######################camera_color_optical_frame######################
+                new_pose.position.x     = depth_point[0]*self.scale
+                new_pose.position.y     = depth_point[1]*self.scale
+                new_pose.position.z     = depth_point[2]*self.scale
 
                 new_pose.orientation.x  = 0.0
                 new_pose.orientation.y  = 0.0
@@ -277,14 +279,14 @@ class DetectCentroid(object):
 
                 if depth_point[0]!=0 and depth_point[1]!=0 and depth_point[2]!=0:
                     print(f'x = {new_pose.position.x}, y = {new_pose.position.y}, z = {new_pose.position.z}')
-                    send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
+                    self.send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
 
                     masked_depth = np.zeros((self.H, self.W), dtype=np.uint16)
                     # mask_int = mask_image.astype(np.uint16)*255
                     mask_int = max_mask.astype(np.uint16)*255
                     ret, thresh = cv2.threshold(mask_int, 127, 255, 0)
                     masked_depth[np.nonzero(thresh)] = depth_image[np.nonzero(thresh)]
-                    points = self.depthToPointcloud(masked_depth) #* 1000
+                    points = self.depthToPointcloud(masked_depth) * self.scale
                     self.publishPointcloud(self.pcmasking_pub, points, self.rgb_red)
 
                     pcd = o3d.geometry.PointCloud()
@@ -299,9 +301,9 @@ class DetectCentroid(object):
 
                     print(f"Plane equation: {a:.5f}x + {b:.5f}y + {c:.5f}z + {d:.5f} = 0")
 
-                    z1 = depth_point[2]#*1000
+                    z1 = depth_point[2]*self.scale
                     z2 = 0
-                    x1 = depth_point[0]#*1000
+                    x1 = depth_point[0]*self.scale
                     # x2 = -(b*(z1-z2)/a+x1)
                     # x2 = (x1-a)/(c-z1)+a
                     x2 = x1 - a*z1/c
@@ -331,7 +333,7 @@ class DetectCentroid(object):
                     second_line_point.x = x2
                     line.append(second_line_point)
                     ##--- END : LINE Marker
-                    send_traj_line_marker(marker_pub=self.line_pub, pose=line_pose, points=line)
+                    self.send_traj_line_marker(marker_pub=self.line_pub, pose=line_pose, points=line)
                     print("PROCESS SUCCEEDED")
 
             except:
@@ -355,7 +357,7 @@ class DetectCentroid(object):
   
 if __name__ == '__main__':
     try:
-        detect_centroid = DetectCentroid()
+        detect_centroid = DetectCentroid(use_gazebo=True)
         detect_centroid.window()
         detect_centroid.Process()
 
