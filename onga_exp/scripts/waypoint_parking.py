@@ -9,17 +9,21 @@ from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, Point, Quaternion
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from math import pi
 from visualization_msgs.msg import Marker,MarkerArray
+from std_msgs.msg import Float32
 
 class WpNavi():
     def __init__(self):
         self.GOAL = {'topic': '/object/centroid', 'msg': Marker}
+        self.ARG = {'topic': '/argument', 'msg': Float32}
         self.way_point = [[2.0, 3.0,0.0 * pi], [ 3.0, -3.0, 0.0 * pi], [0.0, 0.0, 0.0 * pi], [999, 999, 999]]
         self.ac = actionlib.SimpleActionClient('move_base', MoveBaseAction)
         self.goal = MoveBaseGoal()
 
-        self.goal_x = 3
+        self.goal_x = 3 #TEMPORAL METHOD
         self.goal_y = 0
         self.goal_z = 0
+
+        self.arg = 180
 
         rospy.on_shutdown(self.shutdown)
 
@@ -28,12 +32,17 @@ class WpNavi():
         self.goal_y = msg.pose.position.y
         self.goal_z = msg.pose.position.z
 
+    def arg_callback(self,msg):
+        self.arg = -msg.data
+        # print(self.arg)
+
     def shutdown(self):
         rospy.loginfo("The robot was terminated.")                               
         self.ac.cancel_goal()
 
     def process(self):
         rospy.Subscriber(self.GOAL['topic'], self.GOAL['msg'], self.centroid_callback)
+        rospy.Subscriber(self.ARG['topic'], self.ARG['msg'], self.arg_callback)
 
         while not self.ac.wait_for_server(rospy.Duration(5)):
             rospy.loginfo("Waiting for the move_base action server to come up.")
@@ -46,11 +55,12 @@ class WpNavi():
             self.goal.target_pose.pose.position.x = self.goal_z-1.5
             self.goal.target_pose.pose.position.y = -self.goal_x
 
-            if self.goal.target_pose.pose.position.x != 3:
+            if self.goal.target_pose.pose.position.x != 3:  #TEMPORAL METHOD
 
                 if self.way_point[i][0] == 999:
                     break
-                q = tf.transformations.quaternion_from_euler(0, 0, self.way_point[i][2])
+                print(self.arg)
+                q = tf.transformations.quaternion_from_euler(0, 0, self.arg)#self.way_point[i][2])
                 self.goal.target_pose.pose.orientation = Quaternion(q[0],q[1],q[2],q[3])
                 rospy.loginfo("Sending goal: No" + str(i+1))
                 self.ac.send_goal(self.goal)

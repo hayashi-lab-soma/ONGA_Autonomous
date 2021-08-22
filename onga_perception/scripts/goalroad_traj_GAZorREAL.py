@@ -10,7 +10,7 @@ import message_filters
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import CameraInfo, Image, PointCloud2, PointField
 import ros_numpy as rosnp
-from std_msgs.msg import Header
+from std_msgs.msg import Header, Float32
 from visualization_msgs.msg import Marker,MarkerArray
 from geometry_msgs.msg import Point,Pose
 from sensor_msgs import point_cloud2
@@ -181,6 +181,10 @@ class DetectCentroid(object):
     def empty(self,a):
         pass
 
+    def publish_notmalVector(self, arg_pub, vec_x, vec_y):
+        arg = math.degrees(math.atan(vec_y/vec_x))
+        arg_pub.publish(arg)
+
     # create new window with trackbar for HSV Color
     def window(self):
         cv2.namedWindow("Range HSV")
@@ -298,6 +302,7 @@ class DetectCentroid(object):
                                                             num_iterations=1000)
                     [a, b, c, d] = plane_model
                     # o3d.visualization.draw_geometries([downpcd])
+                    self.publish_notmalVector(self.arg_pub,a,c)
 
                     print(f"Plane equation: {a:.5f}x + {b:.5f}y + {c:.5f}z + {d:.5f} = 0")
 
@@ -322,13 +327,13 @@ class DetectCentroid(object):
                     line = []
                     # first point
                     first_line_point = Point()
-                    first_line_point.y = 0
+                    first_line_point.y = 0.755
                     first_line_point.z = z1
                     first_line_point.x = x1
                     line.append(first_line_point)
                     # second point
                     second_line_point = Point()
-                    second_line_point.y = 0
+                    second_line_point.y = 0.755
                     second_line_point.z = z2
                     second_line_point.x = x2
                     line.append(second_line_point)
@@ -350,6 +355,7 @@ class DetectCentroid(object):
         self.object_pub     = rospy.Publisher( '/object/centroid', Marker, queue_size=10)
         self.line_pub       = rospy.Publisher( '/object/line', Marker, queue_size=10)
         self.pcmasking_pub = rospy.Publisher('/pointcloud_masking', PointCloud2, queue_size=10)
+        self.arg_pub = rospy.Publisher('/argument', Float32, queue_size=10)
         # rospy.spin()
         while not rospy.is_shutdown():
             self.get_hsvcentroid()
