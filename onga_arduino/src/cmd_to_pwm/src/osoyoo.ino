@@ -16,10 +16,17 @@ ros::NodeHandle  nh;
 
 void cmdVelCB( const geometry_msgs::Twist& twist)
 {
-  int gain = 700;
+  int gain = 330;
   float left_wheel_data = gain*(twist.linear.x + twist.angular.z*L);
   float right_wheel_data = -gain*(twist.linear.x - twist.angular.z*L);
-  
+
+  // if(left_wheel_data > 255){
+  //   left_wheel_data = 255;
+  // }
+  if(right_wheel_data > 255){
+    right_wheel_data = 255;
+  }
+
   if (left_wheel_data >= 0)
   {
     analogWrite(ENA, abs(left_wheel_data));
