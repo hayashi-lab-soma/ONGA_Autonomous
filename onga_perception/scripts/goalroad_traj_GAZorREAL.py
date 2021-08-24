@@ -16,6 +16,7 @@ from geometry_msgs.msg import Point,Pose
 from sensor_msgs import point_cloud2
 import struct
 import open3d as o3d
+from math import pi
 # from tf.msg import tfMessage
 
 class DetectCentroid(object):
@@ -182,7 +183,15 @@ class DetectCentroid(object):
         pass
 
     def publish_notmalVector(self, arg_pub, vec_x, vec_y):
-        arg = math.degrees(math.atan(vec_y/vec_x))
+        # arg = math.degrees(math.atan(vec_y/vec_x))
+        # arg = -1 * (pi/2 - math.atan(vec_y/vec_x))
+        # arg = -1 * (math.atan(vec_y/vec_x))
+        arg = math.atan(vec_y/vec_x)
+        if arg<0:
+            arg = arg + pi/2
+        else:
+            arg = -1*(arg - pi/2)
+        print(f'ARG={arg}')
         arg_pub.publish(arg)
 
     # create new window with trackbar for HSV Color
@@ -283,7 +292,7 @@ class DetectCentroid(object):
 
                 if depth_point[0]!=0 and depth_point[1]!=0 and depth_point[2]!=0:
                     print(f'x = {new_pose.position.x}, y = {new_pose.position.y}, z = {new_pose.position.z}')
-                    self.send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
+                    # self.send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
 
                     masked_depth = np.zeros((self.H, self.W), dtype=np.uint16)
                     # mask_int = mask_image.astype(np.uint16)*255
@@ -312,6 +321,27 @@ class DetectCentroid(object):
                     # x2 = -(b*(z1-z2)/a+x1)
                     # x2 = (x1-a)/(c-z1)+a
                     x2 = x1 - a*z1/c
+
+#######################################################################################
+                    # s = 0.2
+                    # x3 = x1 - s
+                    # z3 = -c/a*s + z1
+                    d = 2
+                    s = (a*c*d/(a*a+c*c))**(2)*((a/c)**(2)+1)
+                    x3p = x1 + math.sqrt(s)
+                    x3m = x1 - math.sqrt(s)
+                    z3p = c*math.sqrt(s)/a + z1
+                    z3m = -c*math.sqrt(s)/a + z1
+                    if z3p<z3m:
+                        x3, z3 = x3p, z3p
+                    else:
+                        x3, z3 = x3m, z3m
+                    new_pose.position.x     = x3
+                    new_pose.position.y     = depth_point[1]*self.scale
+                    new_pose.position.z     = z3
+                    self.send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
+########################################################################################
+
                     ##--- LINE Marker
                     line_pose = Pose()
                     line_pose.position.y     = 0.0

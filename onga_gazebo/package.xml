@@ -67,5 +67,6 @@
   <export>
     <!-- Other tools can request additional information be placed here -->
     <gazebo_ros gazebo_media_path="${prefix}/worlds" />
+    <gazebo_ros gazebo_media_path="${prefix}/gazebo_aruco_box" />
   </export>
 </package>

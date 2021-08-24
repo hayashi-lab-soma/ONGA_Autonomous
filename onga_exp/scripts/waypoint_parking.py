@@ -33,7 +33,7 @@ class WpNavi():
         self.goal_z = msg.pose.position.z
 
     def arg_callback(self,msg):
-        self.arg = -msg.data
+        self.arg = msg.data
         # print(self.arg)
 
     def shutdown(self):
@@ -52,7 +52,7 @@ class WpNavi():
         while not rospy.is_shutdown():
             self.goal.target_pose.header.frame_id = 'base_link'
             self.goal.target_pose.header.stamp = rospy.Time.now()
-            self.goal.target_pose.pose.position.x = self.goal_z-1.5
+            self.goal.target_pose.pose.position.x = self.goal_z
             self.goal.target_pose.pose.position.y = -self.goal_x
 
             if self.goal.target_pose.pose.position.x != 3:  #TEMPORAL METHOD

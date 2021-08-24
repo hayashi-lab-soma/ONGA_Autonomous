@@ -27,7 +27,7 @@ class WpNavi():
 
         i = 0
         while not rospy.is_shutdown():
-            self.goal.target_pose.header.frame_id = 'odom'
+            self.goal.target_pose.header.frame_id = 'base_link'
             self.goal.target_pose.header.stamp = rospy.Time.now()
             self.goal.target_pose.pose.position.x = 0
             self.goal.target_pose.pose.position.y = 0
