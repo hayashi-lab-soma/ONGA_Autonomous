@@ -10,7 +10,10 @@
     robot_namespace:=$(arg robot_namespace)
     laser_enabled:=$(arg laser_enabled)
     realsense_enabled:=$(arg realsense_enabled)
-    urdf_extras:=$(arg urdf_extras)
-    " />
+    urdf_extras:=$(arg urdf_extras)" 
+  />
+
+  <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find onga_description)/urdf/osoyoo.urdf.xacro'" 
+  /> -->
 
 </launch>

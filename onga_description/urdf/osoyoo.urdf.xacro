@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="soma">
+	<!--  -->
+	<!--  -->
+	<include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+	<!-- <include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro" /> -->
+	<!--  -->
+	<!--  -->
+	<!--  -->
+	<link name="base_link">
+		<visual>
+			<origin xyz="0.06 0.0 0.0" rpy="0.0 0.0 0.0" />
+			<!-- <geometry>
+				<box size="0.25 0.11 0.17" />
+			</geometry> -->
+		</visual>
+	</link>
+	<!-- Base footprint is on the ground under the robot -->
+	<link name="base_footprint" />
+	<joint name="base_footprint_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="base_footprint" />
+		<origin xyz="0.0 0.0 -0.006" rpy="0.0 0.0 0.0" />
+	</joint>
+	<!--
+	sensor links
+	D435,VLP-16,IMU, ...
+	-->
+	<!-- realsense link (front side) -->
+	<link name="camera_f_mount_link" />
+	<joint name="camera_f_mount_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="camera_f_mount_link" />
+		<origin xyz="0.087 0.0 0.097" rpy="0.0 0.0 0.0" />
+	</joint>
+	<sensor_d435 parent="camera_f_mount_link" name="camera_f">
+		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.1745 0.0" />
+	</sensor_d435>
+	<!-- realsense link (rear side) -->
+	<!-- <link name="camera_r_mount_link" />
+	<joint name="camera_r_mount_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="camera_r_mount_link" />
+		<origin xyz="-0.2 0.0 0.35" rpy="0.0 0.0 -3.1415" />
+	</joint>
+	<sensor_d435 parent="camera_r_mount_link" name="camera_r">
+		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.2617 0.0" />
+	</sensor_d435> -->
+</robot>
