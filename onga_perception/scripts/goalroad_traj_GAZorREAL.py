@@ -221,11 +221,11 @@ class DetectCentroid(object):
 
             #####################under_graduate_cirtification######################
             cv2.createTrackbar("HUE Min", "Range HSV", 15,180, self.empty)#105,180 orange corn
-            cv2.createTrackbar("HUE Max", "Range HSV", 180,180, self.empty)#168,180
-            cv2.createTrackbar("SAT Min", "Range HSV", 31,255, self.empty)#22,255
-            cv2.createTrackbar("SAT Max", "Range HSV", 138,255, self.empty)#149,255
+            cv2.createTrackbar("HUE Max", "Range HSV", 92,180, self.empty)#168,180
+            cv2.createTrackbar("SAT Min", "Range HSV", 71,255, self.empty)#22,255
+            cv2.createTrackbar("SAT Max", "Range HSV", 156,255, self.empty)#149,255
             cv2.createTrackbar("VALUE Min", "Range HSV",0,255, self.empty)#0,255
-            cv2.createTrackbar("VALUE Max", "Range HSV", 19,255, self.empty)#50,255
+            cv2.createTrackbar("VALUE Max", "Range HSV", 30,255, self.empty)#50,255
             #####################under_graduate_cirtification######################
 
     def get_hsvcentroid(self):
@@ -286,8 +286,8 @@ class DetectCentroid(object):
                     self.send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
 
                     masked_depth = np.zeros((self.H, self.W), dtype=np.uint16)
-                    # mask_int = mask_image.astype(np.uint16)*255
-                    mask_int = max_mask.astype(np.uint16)*255
+                    mask_int = mask_image.astype(np.uint16)*255
+                    # mask_int = max_mask.astype(np.uint16)*255
                     ret, thresh = cv2.threshold(mask_int, 127, 255, 0)
                     masked_depth[np.nonzero(thresh)] = depth_image[np.nonzero(thresh)]
                     points = self.depthToPointcloud(masked_depth) * self.scale
@@ -297,7 +297,7 @@ class DetectCentroid(object):
                     pcd.points = o3d.utility.Vector3dVector(points)
                     downpcd = pcd.voxel_down_sample(voxel_size=0.05)
                     # pcd = o3d.io.read_point_cloud(points)
-                    plane_model, inliers = downpcd.segment_plane(distance_threshold=5.0,
+                    plane_model, inliers = downpcd.segment_plane(distance_threshold=0.5,
                                                             ransac_n=5,#gazebo : 50
                                                             num_iterations=1000)
                     [a, b, c, d] = plane_model
@@ -327,13 +327,13 @@ class DetectCentroid(object):
                     line = []
                     # first point
                     first_line_point = Point()
-                    first_line_point.y = 0.755
+                    first_line_point.y = 0#0.755
                     first_line_point.z = z1
                     first_line_point.x = x1
                     line.append(first_line_point)
                     # second point
                     second_line_point = Point()
-                    second_line_point.y = 0.755
+                    second_line_point.y = 0#0.755
                     second_line_point.z = z2
                     second_line_point.x = x2
                     line.append(second_line_point)
@@ -363,7 +363,7 @@ class DetectCentroid(object):
   
 if __name__ == '__main__':
     try:
-        detect_centroid = DetectCentroid(use_gazebo=True)
+        detect_centroid = DetectCentroid(use_gazebo=False)
         detect_centroid.window()
         detect_centroid.Process()
 
