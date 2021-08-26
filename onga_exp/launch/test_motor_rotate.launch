@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="rostopic" type="rostopic" name="forward" 
+    args="pub -1 /onga_velocity_controller/cmd_vel geometry_msgs/Twist &quot;{
+        'linear': {
+            'x': 0.3,
+            'y': 0.0,
+            'z': 0.0,
+        },
+        'angular': {
+            'x': 0.0,
+            'y': 0.0,
+            'z': 0.0,
+        }
+    }&quot;"/>
+
+    <!-- <node pkg="rostopic" type="rostopic" name="stop" 
+    args="pub -1 /onga_velocity_controller/cmd_vel geometry_msgs/Twist &quot;{
+        'linear': {
+            'x': 0.0,
+            'y': 0.0,
+            'z': 0.0,
+        },
+        'angular': {
+            'x': 0.0,
+            'y': 0.0,
+            'z': 0.0,
+        }
+    }&quot;"/> -->
+</launch>
