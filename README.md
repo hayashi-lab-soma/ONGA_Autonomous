@@ -48,12 +48,15 @@
     Platformioを使用してコンパイル、Aruduinoへの書き込みを行う
     ```
     ##platformioのインストール##
+    curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py -o get-platformio.py
+    python3 get-platformio.py
+
 
     ##pipのアップグレード
     pip3 install --upgrade pip
     
     ##platformioをインストール
-    pip3 install pltformio
+    pip3 install platformio
     
     ##インストール完了の確認
     pio --version
