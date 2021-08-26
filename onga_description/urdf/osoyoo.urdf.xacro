@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="soma">
+<robot name="osoyoo" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 	<!--  -->
 	<!--  -->
 	<include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
@@ -7,6 +7,29 @@
 	<!--  -->
 	<!--  -->
 	<!--  -->
+	<material name="gray">
+		<color rgba="0.5 0.5 0.5 2.5"/>
+	</material>
+	<material name="red">
+		<color rgba="1.0 0.0 0.0 2.5"/>
+	</material>
+	<xacro:macro name="wheel_macro" params="parent prefix xyz">
+		<joint name="${prefix}_joint" type="continuous">
+		<origin xyz="${xyz}" rpy="${radians(-90)} 0 0"/>
+		<parent link="${parent}"/>
+		<child  link="${prefix}_link"/>
+		<axis xyz="0 0 1" />
+		</joint>
+		<link name="${prefix}_link">
+			<visual>
+				<geometry>
+					<cylinder radius="0.033" length="0.025" />
+				</geometry>
+				<material name="red"/>
+			</visual>
+		</link>
+  	</xacro:macro>
+
 	<link name="base_link">
 		<visual>
 			<origin xyz="0.06 0.0 0.0" rpy="0.0 0.0 0.0" />
@@ -20,11 +43,30 @@
 	<joint name="base_footprint_joint" type="fixed">
 		<parent link="base_link" />
 		<child link="base_footprint" />
-		<origin xyz="0.0 0.0 -0.006" rpy="0.0 0.0 0.0" />
+		<origin xyz="0.0 0.0 -0.03" rpy="0.0 0.0 0.0" />
 	</joint>
+	<joint name="body_joint" type="fixed">
+		<parent link="base_link"/>
+		<child  link="body_link"/>
+		<origin xyz="0.0 0.0 0.057" rpy="0 0 0"/>
+  	</joint>
+	<link name="body_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="0.11 0.115 0.114" />
+			</geometry>
+			<material name="gray" />
+		</visual>
+ 	 </link>
+	<xacro:wheel_macro prefix="front_left_wheel_link"  parent="base_link" xyz="0.05 0.07 0.0"/>
+	<xacro:wheel_macro prefix="front_right_wheel_link" parent="base_link" xyz="0.05 -0.07 0.0"/>
+	<xacro:wheel_macro prefix="rear_left_wheel_link"  parent="base_link" xyz="-0.05 0.07 0.0"/>
+	<xacro:wheel_macro prefix="rear_right_wheel_link" parent="base_link" xyz="-0.05 -0.07 0.0"/>
+
 	<!--
 	sensor links
-	D435,VLP-16,IMU, ...
+	D435,T265 ...
 	-->
 	<!-- realsense link (front side) -->
 	<link name="camera_f_mount_link" />
@@ -36,14 +78,4 @@
 	<sensor_d435 parent="camera_f_mount_link" name="camera_f">
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.1745 0.0" />
 	</sensor_d435>
-	<!-- realsense link (rear side) -->
-	<!-- <link name="camera_r_mount_link" />
-	<joint name="camera_r_mount_joint" type="fixed">
-		<parent link="base_link" />
-		<child link="camera_r_mount_link" />
-		<origin xyz="-0.2 0.0 0.35" rpy="0.0 0.0 -3.1415" />
-	</joint>
-	<sensor_d435 parent="camera_r_mount_link" name="camera_r">
-		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.2617 0.0" />
-	</sensor_d435> -->
 </robot>
