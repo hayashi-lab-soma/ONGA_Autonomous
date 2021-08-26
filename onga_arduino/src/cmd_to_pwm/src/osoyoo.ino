@@ -10,15 +10,15 @@
 #define IN3 7
 #define IN4 8
 
-float L = 0.1; //distance between wheenls
-
 ros::NodeHandle  nh;
 
 void cmdVelCB( const geometry_msgs::Twist& twist)
 {
-  int gain = 330;
-  float left_wheel_data = gain*(twist.linear.x + twist.angular.z*L);
-  float right_wheel_data = -gain*(twist.linear.x - twist.angular.z*L);
+  int a = 220;
+  int b = 480;
+
+  float left_wheel_data = a*twist.linear.x + b*twist.angular.z;
+  float right_wheel_data = -a*twist.linear.x + b*twist.angular.z;
 
   // if(left_wheel_data > 255){
   //   left_wheel_data = 255;
