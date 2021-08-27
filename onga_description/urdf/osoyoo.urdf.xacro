@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <robot name="osoyoo" xmlns:xacro="http://www.ros.org/wiki/xacro" >
-	<!--  -->
-	<!--  -->
-	<include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
-	<!-- <include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro" /> -->
-	<!--  -->
-	<!--  -->
-	<!--  -->
+	<!-- load sensor models -->
+	<!-- <include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" /> -->
+	<xacro:include filename="$(find husky_description)/urdf/accessories/intel_realsense.urdf.xacro"/>
+	
+	<!-- parameters -->
+	<xacro:arg name="rs_mount_xyz" default="0.087 0.0 0.097" />
+  	<xacro:arg name="rs_mount_rpy" default="0.0 0.0 0.0" />
+	<xacro:arg name="d435_xyz" default="0.0 0.0 0.0" />
+  	<xacro:arg name="d435_rpy" default="0.0 0.1745 0.0" />
+
+	<!-- define colors and materials -->
 	<material name="gray">
 		<color rgba="0.5 0.5 0.5 2.5"/>
 	</material>
@@ -30,15 +34,12 @@
 		</link>
   	</xacro:macro>
 
+	<!-- define TF links -->
 	<link name="base_link">
 		<visual>
 			<origin xyz="0.06 0.0 0.0" rpy="0.0 0.0 0.0" />
-			<!-- <geometry>
-				<box size="0.25 0.11 0.17" />
-			</geometry> -->
 		</visual>
 	</link>
-	<!-- Base footprint is on the ground under the robot -->
 	<link name="base_footprint" />
 	<joint name="base_footprint_joint" type="fixed">
 		<parent link="base_link" />
@@ -64,18 +65,15 @@
 	<xacro:wheel_macro prefix="rear_left_wheel_link"  parent="base_link" xyz="-0.05 0.07 0.0"/>
 	<xacro:wheel_macro prefix="rear_right_wheel_link" parent="base_link" xyz="-0.05 -0.07 0.0"/>
 
-	<!--
-	sensor links
-	D435,T265 ...
-	-->
-	<!-- realsense link (front side) -->
-	<link name="camera_mount_link" />
-	<joint name="camera_mount_joint" type="fixed">
+	<link name="rs_mount_link" />
+	<joint name="rs_mount_joint" type="fixed">
 		<parent link="base_link" />
-		<child link="camera_mount_link" />
-		<origin xyz="0.087 0.0 0.097" rpy="0.0 0.0 0.0" />
+		<child link="rs_mount_link" />
+		<origin xyz="$(arg rs_mount_xyz)" rpy="$(arg rs_mount_rpy)" />
 	</joint>
-	<sensor_d435 parent="camera_mount_link" name="d400">
-		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.1745 0.0" />
-	</sensor_d435>
+	<!-- <sensor_d435 parent="rs_mount_link" name="camera">
+		<origin xyz="$(arg d435_xyz)" rpy="$(arg d435_rpy)" />
+	</sensor_d435> -->
+	<xacro:intel_realsense_mount prefix="camera" topic="realsense" parent_link="rs_mount_link"/>
+
 </robot>
