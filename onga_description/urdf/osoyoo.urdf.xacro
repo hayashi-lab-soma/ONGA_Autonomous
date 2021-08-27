@@ -69,13 +69,13 @@
 	D435,T265 ...
 	-->
 	<!-- realsense link (front side) -->
-	<link name="camera_f_mount_link" />
-	<joint name="camera_f_mount_joint" type="fixed">
+	<link name="camera_mount_link" />
+	<joint name="camera_mount_joint" type="fixed">
 		<parent link="base_link" />
-		<child link="camera_f_mount_link" />
+		<child link="camera_mount_link" />
 		<origin xyz="0.087 0.0 0.097" rpy="0.0 0.0 0.0" />
 	</joint>
-	<sensor_d435 parent="camera_f_mount_link" name="camera_f">
+	<sensor_d435 parent="camera_mount_link" name="d400">
 		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.1745 0.0" />
 	</sensor_d435>
 </robot>
