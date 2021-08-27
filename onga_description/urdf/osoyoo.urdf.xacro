@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <robot name="osoyoo" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 	<!-- load sensor models -->
-	<!-- <include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" /> -->
-	<xacro:include filename="$(find husky_description)/urdf/accessories/intel_realsense.urdf.xacro"/>
+	<include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+	<!-- <xacro:include filename="$(find husky_description)/urdf/accessories/intel_realsense.urdf.xacro"/> -->
 	
 	<!-- parameters -->
 	<xacro:arg name="rs_mount_xyz" default="0.087 0.0 0.097" />
   	<xacro:arg name="rs_mount_rpy" default="0.0 0.0 0.0" />
-	<xacro:arg name="d435_xyz" default="0.0 0.0 0.0" />
-  	<xacro:arg name="d435_rpy" default="0.0 0.1745 0.0" />
+	<xacro:arg name="d400_xyz" default="0.0 0.0 0.0" />
+  	<xacro:arg name="d400_rpy" default="0.0 0.1745 0.0" />
 
 	<!-- define colors and materials -->
 	<material name="gray">
@@ -71,9 +71,9 @@
 		<child link="rs_mount_link" />
 		<origin xyz="$(arg rs_mount_xyz)" rpy="$(arg rs_mount_rpy)" />
 	</joint>
-	<!-- <sensor_d435 parent="rs_mount_link" name="camera">
-		<origin xyz="$(arg d435_xyz)" rpy="$(arg d435_rpy)" />
-	</sensor_d435> -->
-	<xacro:intel_realsense_mount prefix="camera" topic="realsense" parent_link="rs_mount_link"/>
+	<sensor_d435 parent="rs_mount_link" name="d400">
+		<origin xyz="$(arg d400_xyz)" rpy="$(arg d400_rpy)" />
+	</sensor_d435>
+	<!-- <xacro:intel_realsense_mount prefix="camera" topic="realsense" parent_link="rs_mount_link"/> -->
 
 </robot>
