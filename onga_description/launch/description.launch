@@ -3,16 +3,16 @@
 
   <arg name="robot_namespace" default="/"/>
   <arg name="laser_enabled" default="false"/>
-  <arg name="realsense_enabled" default="false"/>
+  <arg name="realsense_enabled" default="true"/>
   <arg name="urdf_extras" default=""/>
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find husky_description)/urdf/husky.urdf.xacro'
+  <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find husky_description)/urdf/husky.urdf.xacro'
     robot_namespace:=$(arg robot_namespace)
     laser_enabled:=$(arg laser_enabled)
     realsense_enabled:=$(arg realsense_enabled)
     urdf_extras:=$(arg urdf_extras)" 
-  />
+  /> -->
 
-  <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find onga_description)/urdf/osoyoo.urdf.xacro'" /> -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find onga_description)/urdf/osoyoo.urdf.xacro'" />
 
 </launch>

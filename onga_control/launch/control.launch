@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="simulation" default="false"/>
   <arg name="robot_namespace" default="robot"/>
-  <arg name="enable_ekf" default="true"/>
+  <arg name="enable_ekf" default="false"/>
 
   <arg name="config_extras"
        default="$(eval optenv('', find('onga_control') + '/config/empty.yaml'))"/>
 
   <arg name="laser_enabled" default="false"/>
-  <arg name="realsense_enabled" default="false"/>
+  <arg name="realsense_enabled" default="true"/>
   <arg name="urdf_extras" default=""/>
 
   <!-- Load robot description -->

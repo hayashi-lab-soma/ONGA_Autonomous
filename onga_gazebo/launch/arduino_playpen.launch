@@ -8,6 +8,5 @@
         <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
     </include>
     
-    <include file="$(find onga_arduino)/launch/cmd_to_pwm.launch">
-    </include>
+    <include file="$(find onga_arduino)/launch/cmd_to_pwm.launch" />
 </launch>

@@ -49,8 +49,8 @@
     </include>
   </group>
 
-<!--  -->
-	<arg name="laser_enabled" default="false"/>
+  <!-- robot description -->
+	<!-- <arg name="laser_enabled" default="false"/>
 	<arg name="realsense_enabled" default="false"/>
 	<arg name="urdf_extras" default=""/>
 
@@ -60,8 +60,5 @@
 		<arg name="urdf_extras" default="$(arg urdf_extras)"/>
 	</include>
 
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-  <!-- <node pkg="tf" type="static_transform_publisher" name="t265_to_d400" args="0 0 0 0 0 0 /$(arg tf_prefix_camera1)_link /$(arg tf_prefix_camera2)_link 100"/> -->
-
-<!--  -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> -->
 </launch>
