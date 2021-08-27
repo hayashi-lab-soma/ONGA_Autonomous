@@ -1,24 +1,15 @@
 <?xml version="1.0"?>
 <launch>
-
-  <arg name="multimaster" default="$(optenv ROBOT_MULTIMASTER false)"/>
-  <arg name="simulation" default="$(optenv ROBOT_SIMULATION false)"/>
-  <arg name="robot_namespace" default="$(optenv ROBOT_NAMESPACE robot)"/>
-  <arg name="enable_ekf" default="$(optenv ENABLE_EKF true)"/>
+  <arg name="simulation" default="false"/>
+  <arg name="robot_namespace" default="robot"/>
+  <arg name="enable_ekf" default="true"/>
 
   <arg name="config_extras"
-       default="$(eval optenv('ONGA_CONFIG_EXTRAS', find('onga_control') + '/config/empty.yaml'))"/>
+       default="$(eval optenv('', find('onga_control') + '/config/empty.yaml'))"/>
 
-  <arg name="laser_enabled" default="$(optenv ONGA_LMS1XX_ENABLED false)"/>
-  <arg name="realsense_enabled" default="$(optenv ONGA_REALSENSE_ENABLED false)"/>
-  <arg name="urdf_extras" default="$(optenv ONGA_URDF_EXTRAS)"/>
-
-  <include file="$(find multimaster_launch)/launch/multimaster_robot.launch" if="$(arg multimaster)">
-    <arg name="gazebo_interface" value="$(find onga_control)/config/gazebo_interface.yaml" />
-    <arg name="public_interface" value="$(find onga_control)/config/public_interface.yaml" />
-    <arg name="robot_namespace" value="$(arg robot_namespace)"/>
-    <arg name="simulation" value="$(arg simulation)"/>
-  </include>
+  <arg name="laser_enabled" default="false"/>
+  <arg name="realsense_enabled" default="false"/>
+  <arg name="urdf_extras" default=""/>
 
   <!-- Load robot description -->
   <include file="$(find onga_description)/launch/description.launch" >
