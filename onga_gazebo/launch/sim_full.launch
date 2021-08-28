@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
 <launch>
+    <!-- robot_mode : husky, osoyoo -->
+    <arg name="mode" default="osoyoo"/>
+
     <arg name="laser_enabled" default="0"/>
     <arg name="realsense_enabled" default="1"/>
 
     <include file="$(find onga_gazebo)/launch/onga_playpen.launch">
-        <arg name="laser_enabled" default="$(arg laser_enabled)"/>
-        <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
+        <arg name="mode" value="$(arg mode)"/>
+        <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+        <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
     </include>
     
     <include file="$(find onga_viz)/launch/view_robot.launch" />
