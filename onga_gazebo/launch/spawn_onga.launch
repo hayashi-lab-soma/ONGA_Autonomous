@@ -1,4 +1,5 @@
 <launch>
+  <arg name="mode" default="husky"/>
   <arg name="robot_namespace" default="/"/>
 
   <arg name="x" default="0.0"/>
@@ -14,11 +15,13 @@
 
   <group ns="$(arg robot_namespace)">
     <include file="$(find onga_control)/launch/control.launch">
+      <arg name="mode" value="$(arg mode)"/>
       <arg name="laser_enabled" value="$(arg laser_enabled)"/>
       <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
       <arg name="urdf_extras" value="$(arg urdf_extras)"/>
     </include>
     <include file="$(find onga_control)/launch/teleop.launch">
+      <arg name="mode" value="$(arg mode)"/>
       <arg name="joystick" value="$(arg joystick)" />
     </include>
 
