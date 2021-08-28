@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <!-- robot_mode : husky, osoyoo -->
-  <arg name="mode" default="husky"/>
+  <arg name="mode" default="osoyoo"/>
 
   <arg name="robot_namespace" default="/"/>
   <arg name="laser_enabled" default="false"/>
@@ -28,5 +28,8 @@
   <group if="$(eval mode == 'osoyoo')">
     <param name="robot_description" command="$(find xacro)/xacro '$(find onga_description)/urdf/osoyoo.urdf.xacro'" />
   </group>
+<!-- 
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
 
 </launch>
