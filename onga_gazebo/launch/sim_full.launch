@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- robot_mode : husky, osoyoo -->
-    <arg name="mode" default="husky"/>
+    <arg name="mode" default="osoyoo"/>
 
     <arg name="laser_enabled" default="0"/>
     <arg name="realsense_enabled" default="1"/>
