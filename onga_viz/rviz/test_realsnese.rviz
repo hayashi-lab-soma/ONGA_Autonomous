@@ -95,11 +95,7 @@ Visualization Manager:
           Value: true
         body_link:
           Value: true
-        camera_mount_link:
-          Value: true
         d400_aligned_depth_to_color_frame:
-          Value: true
-        d400_bottom_screw_frame:
           Value: true
         d400_color_frame:
           Value: true
@@ -110,6 +106,22 @@ Visualization Manager:
         d400_depth_optical_frame:
           Value: true
         d400_link:
+          Value: true
+        front_left_wheel_link_link:
+          Value: true
+        front_right_wheel_link_link:
+          Value: true
+        rear_left_wheel_link_link:
+          Value: true
+        rear_right_wheel_link_link:
+          Value: true
+        rs_mount_link:
+          Value: true
+        t265_link:
+          Value: true
+        t265_odom_frame:
+          Value: true
+        t265_pose_frame:
           Value: true
       Marker Scale: 0.10000000149011612
       Name: TF
@@ -122,24 +134,91 @@ Visualization Manager:
             {}
           body_link:
             {}
-          camera_mount_link:
-            d400_bottom_screw_frame:
-              d400_link:
-                d400_aligned_depth_to_color_frame:
-                  d400_color_optical_frame:
-                    {}
-                d400_color_frame:
-                  {}
-                d400_depth_frame:
-                  d400_depth_optical_frame:
-                    {}
+          front_left_wheel_link_link:
+            {}
+          front_right_wheel_link_link:
+            {}
+          rear_left_wheel_link_link:
+            {}
+          rear_right_wheel_link_link:
+            {}
+          rs_mount_link:
+            t265_odom_frame:
+              t265_pose_frame:
+                t265_link:
+                  d400_link:
+                    d400_aligned_depth_to_color_frame:
+                      d400_color_optical_frame:
+                        {}
+                    d400_color_frame:
+                      {}
+                    d400_depth_frame:
+                      d400_depth_optical_frame:
+                        {}
       Update Interval: 0
       Value: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        body_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_left_wheel_link_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_right_wheel_link_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_left_wheel_link_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_right_wheel_link_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rs_mount_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        t265_odom_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+      Name: RobotModel
+      Robot Description: robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: base_footprint
     Frame Rate: 30
   Name: root
   Tools:
@@ -163,25 +242,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.3957667350769043
+      Distance: 0.8830903172492981
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.17190133035182953
-        Y: -0.09840473532676697
-        Z: 0.14850234985351562
+        X: 0.2230793684720993
+        Y: 0.09500721842050552
+        Z: 0.18744494020938873
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.080398328602314
+      Pitch: 0.44039812684059143
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.3753975629806519
+      Yaw: 2.7053983211517334
     Saved: ~
 Window Geometry:
   Displays:
@@ -200,4 +279,4 @@ Window Geometry:
     collapsed: false
   Width: 1267
   X: 67
-  Y: 30
+  Y: 27
