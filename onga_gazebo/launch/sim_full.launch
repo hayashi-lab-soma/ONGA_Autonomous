@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- robot_mode : husky, osoyoo -->
-    <arg name="mode" default="osoyoo"/>
+    <arg name="mode" default="husky"/>
 
     <arg name="laser_enabled" default="0"/>
     <arg name="realsense_enabled" default="1"/>
@@ -13,6 +13,8 @@
     </include>
     
     <include file="$(find onga_viz)/launch/view_robot.launch" />
-    <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch" />
+    <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch" >
+        <arg name="mode" value="$(arg mode)"/>
+    </include>
 
 </launch>
