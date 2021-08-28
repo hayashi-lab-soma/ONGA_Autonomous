@@ -6,10 +6,8 @@
 	<!-- parameters -->
 	<xacro:arg name="rs_mount_xyz" default="0.087 0.0 0.097" />
   	<xacro:arg name="rs_mount_rpy" default="0.0 0.0 0.0" />
-	<!-- <xacro:arg name="d400_xyz" default="0.0 0.0 0.0" />
-  	<xacro:arg name="d400_rpy" default="0.0 0.1745 0.0" /> -->
-	<xacro:arg name="t265_xyz" default="0.0 0.0 0.015" />
-  	<xacro:arg name="t265_rpy" default="0.0 0.0 0.0" />
+	<xacro:arg name="d400_xyz" default="0.0 0.0 0.0" />
+  	<xacro:arg name="d400_rpy" default="0.0 0.1745 0.0" />
 
 	<!-- define colors and materials -->
 	<material name="gray">
@@ -72,12 +70,8 @@
 		<child link="rs_mount_link" />
 		<origin xyz="$(arg rs_mount_xyz)" rpy="$(arg rs_mount_rpy)" />
 	</joint>
-	<link name="t265_odom_frame"/>
-	<joint name="t265_mount_joint" type="fixed">
-		<origin xyz="$(arg t265_xyz)" rpy="$(arg t265_rpy)"/>
-		<parent link="rs_mount_link"/>
-		<child link="t265_odom_frame"/>
-	</joint>
-	
+	<sensor_d435 parent="rs_mount_link" name="d400">
+		<origin xyz="$(arg d400_xyz)" rpy="$(arg d400_rpy)" />
+	</sensor_d435>
 
 </robot>
