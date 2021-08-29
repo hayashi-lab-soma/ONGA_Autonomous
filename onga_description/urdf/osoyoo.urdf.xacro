@@ -4,7 +4,7 @@
 	<include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
 	
 	<!-- parameters -->
-	<xacro:arg name="rs_mount_xyz" default="0.087 0.0 0.097" />
+	<xacro:arg name="rs_mount_xyz" default="0.087 0.0 0.08" />
   	<xacro:arg name="rs_mount_rpy" default="0.0 0.0 0.0" />
 	<xacro:arg name="d400_xyz" default="0.0 0.0 0.0" />
   	<xacro:arg name="d400_rpy" default="0.0 0.1745 0.0" />
@@ -36,7 +36,7 @@
 	<!-- define TF links -->
 	<link name="base_link">
 		<visual>
-			<origin xyz="0.06 0.0 0.0" rpy="0.0 0.0 0.0" />
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
 		</visual>
 	</link>
 	<link name="base_footprint" />
