@@ -6,8 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /Grid1
-        - /TF1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz/Selection
@@ -28,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: LaserScan
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -54,36 +52,6 @@ Visualization Manager:
       Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
       Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: RGB8
-      Decay Time: 0
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.009999999776482582
-      Style: Flat Squares
-      Topic: /d400/depth/color/points
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: true
     - Class: rviz/TF
       Enabled: true
       Frame Timeout: 15
@@ -96,6 +64,8 @@ Visualization Manager:
         body_link:
           Value: true
         d400_aligned_depth_to_color_frame:
+          Value: true
+        d400_bottom_screw_frame:
           Value: true
         d400_color_frame:
           Value: true
@@ -143,18 +113,22 @@ Visualization Manager:
           rear_right_wheel_link_link:
             {}
           rs_mount_link:
-            t265_odom_frame:
-              t265_pose_frame:
-                t265_link:
-                  d400_link:
-                    d400_aligned_depth_to_color_frame:
-                      d400_color_optical_frame:
-                        {}
-                    d400_color_frame:
-                      {}
-                    d400_depth_frame:
-                      d400_depth_optical_frame:
-                        {}
+            d400_bottom_screw_frame:
+              d400_link:
+                d400_aligned_depth_to_color_frame:
+                  d400_color_optical_frame:
+                    {}
+                d400_color_frame:
+                  {}
+                d400_depth_frame:
+                  d400_depth_optical_frame:
+                    {}
+        t265_link:
+          {}
+        t265_odom_frame:
+          {}
+        t265_pose_frame:
+          {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -176,6 +150,15 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         body_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        d400_bottom_screw_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d400_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -204,16 +187,72 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        t265_odom_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/LaserScan
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: LaserScan
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /realsense/scan
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /d400/depth/color/points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -257,10 +296,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.44039812684059143
+      Pitch: 0.29539814591407776
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.7053983211517334
+      Yaw: 2.680396556854248
     Saved: ~
 Window Geometry:
   Displays:
