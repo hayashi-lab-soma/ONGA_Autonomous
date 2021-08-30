@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="mode" default="husky"/>
+  <arg name="mode" default="osoyoo"/>
   <arg name="no_static_map" default="false"/>
 
   <arg name="base_global_planner" default="navfn/NavfnROS"/>
