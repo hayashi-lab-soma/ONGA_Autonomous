@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="mode" default="husky"/>
+  <arg name="mode" default="osoyoo"/>
   <arg name="no_static_map" default="false"/>
 
   <arg name="base_global_planner" default="navfn/NavfnROS"/>
@@ -19,8 +19,8 @@
 
     <!-- local costmap, needs size -->
     <rosparam file="$(find onga_navigation)/config/$(arg mode)/costmap_local.yaml" command="load" ns="local_costmap" />
-    <param name="local_costmap/width" value="1.0"/>
-    <param name="local_costmap/height" value="1.0"/>
+    <param name="local_costmap/width" value="10.0"/>
+    <param name="local_costmap/height" value="10.0"/>
 
     <!-- static global costmap, static map provides size -->
     <rosparam file="$(find onga_navigation)/config/$(arg mode)/costmap_global_static.yaml" command="load" ns="global_costmap" unless="$(arg no_static_map)"/>

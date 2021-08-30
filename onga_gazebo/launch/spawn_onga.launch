@@ -17,7 +17,8 @@
     <include file="$(find onga_control)/launch/control.launch">
       <arg name="mode" value="$(arg mode)"/>
       <arg name="laser_enabled" value="$(arg laser_enabled)"/>
-      <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
+      <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
+      <arg name="enable_ekf" value="true"/>
       <arg name="urdf_extras" value="$(arg urdf_extras)"/>
     </include>
     <include file="$(find onga_control)/launch/teleop.launch">
