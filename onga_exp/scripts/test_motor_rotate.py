@@ -12,8 +12,8 @@ class Test():
 
     # go straight
     def pub_linear(self):
-        dist = 1.0 # [m]
-        speed = 0.5 # [m/s]
+        dist = 0.5 # [m]
+        speed = 0.1 # [m/s]
         target_time = dist / speed # [s]
 
         t = Twist()

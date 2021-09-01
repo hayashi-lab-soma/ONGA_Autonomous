@@ -13,18 +13,17 @@
 
 ros::NodeHandle  nh;
 
-void leftCB(const std_msgs::Int64& left_pwm)
+void leftCB( const std_msgs::Int64 left_pwm)
 {
-  int pwm = left_pwm.data;
-  if (pwm >= 0)
+  if (left_pwm >= 0)
   {
-    analogWrite(ENA, abs(pwm));
+    analogWrite(ENA, abs(left_pwm));
     digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
   }
   else
   {
-    analogWrite(ENA, abs(pwm));
+    analogWrite(ENA, abs(left_pwm));
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
   }
@@ -32,16 +31,15 @@ void leftCB(const std_msgs::Int64& left_pwm)
 
 void rightCB( const std_msgs::Int64 right_pwm)
 {
-  int pwm = right_pwm.data;
-  if (pwm >= 0)
+  if (right_pwm >= 0)
   {
-    analogWrite(ENB, abs(pwm));
+    analogWrite(ENB, abs(right_pwm));
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, HIGH);
   }
   else
   {
-    analogWrite(ENB, abs(pwm));
+    analogWrite(ENB, abs(right_pwm));
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, LOW);
   }
@@ -70,9 +68,9 @@ void setup()
   nh.subscribe(subLeft);
   nh.subscribe(subRight);
     
-}
+ }
   
-void loop()
-{
+ void loop()
+ {
   nh.spinOnce();
-}
+ }
