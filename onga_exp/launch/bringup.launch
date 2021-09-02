@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="mode" default="osoyoo"/>
+
+    <!-- start low level controller -->
+    <include file="$(find onga_control)/launch/control.launch">
+        <arg name="mode" default="$(arg mode)"/>
+    </include>
+
+    <!-- start joystick controller -->
+    <include file="$(find onga_control)/launch/teleop.launch">
+        <arg name="mode" default="$(arg mode)"/>
+    </include>
+
+    <!-- start sensor -->
+    <include file="$(find onga_exp)/launch/realsense.launch" />
+    <include file="$(find onga_perception)/launch/cloud2laserscan.launch" />
+    <!-- <include file="$(find onga_perception)/launch/rtabmap.launch" /> -->
+
+    <!-- start high level controller -->
+    <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch">
+        <arg name="mode" default="$(arg mode)"/>
+    </include>
+    
+    <include file="$(find onga_arduino)/launch/bringup_arduino.launch" />
+
+</launch>

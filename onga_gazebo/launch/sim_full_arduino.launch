@@ -11,6 +11,6 @@
         <arg name="laser_enabled" value="0"/>
         <arg name="realsense_enabled" value="1"/>
     </include>
-    <include file="$(find onga_arduino)/launch/cmd_to_pwm.launch" />
+    <include file="$(find onga_arduino)/launch/bringup_arduino.launch" />
 
 </launch>
