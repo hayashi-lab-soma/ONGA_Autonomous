@@ -34,11 +34,7 @@
   	</xacro:macro>
 
 	<!-- define TF links -->
-	<link name="base_link">
-		<visual>
-			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-		</visual>
-	</link>
+	<link name="base_link"/>
 	<link name="base_footprint" />
 	<joint name="base_footprint_joint" type="fixed">
 		<parent link="base_link" />

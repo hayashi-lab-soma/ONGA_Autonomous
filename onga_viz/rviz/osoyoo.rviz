@@ -29,7 +29,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -96,14 +96,6 @@ Visualization Manager:
           Value: true
         d400_link:
           Value: true
-        front_left_wheel_link_link:
-          Value: true
-        front_right_wheel_link_link:
-          Value: true
-        rear_left_wheel_link_link:
-          Value: true
-        rear_right_wheel_link_link:
-          Value: true
         rs_mount_link:
           Value: true
         t265_link:
@@ -120,31 +112,24 @@ Visualization Manager:
       Tree:
         t265_odom_frame:
           t265_pose_frame:
-            t265_link:
-              base_link:
-                base_footprint:
-                  {}
-                body_link:
-                  {}
-                front_left_wheel_link_link:
-                  {}
-                front_right_wheel_link_link:
-                  {}
-                rear_left_wheel_link_link:
-                  {}
-                rear_right_wheel_link_link:
-                  {}
-                rs_mount_link:
-                  d400_bottom_screw_frame:
-                    d400_link:
-                      d400_aligned_depth_to_color_frame:
-                        d400_color_optical_frame:
-                          {}
-                      d400_color_frame:
+            base_link:
+              base_footprint:
+                {}
+              body_link:
+                {}
+              rs_mount_link:
+                d400_bottom_screw_frame:
+                  d400_link:
+                    d400_aligned_depth_to_color_frame:
+                      d400_color_optical_frame:
                         {}
-                      d400_depth_frame:
-                        d400_depth_optical_frame:
-                          {}
+                    d400_color_frame:
+                      {}
+                    d400_depth_frame:
+                      d400_depth_optical_frame:
+                        {}
+            t265_link:
+              {}
       Update Interval: 0
       Value: true
     - Class: rviz/InteractiveMarkers
@@ -246,7 +231,7 @@ Visualization Manager:
           Selectable: true
           Size (Pixels): 3
           Size (m): 0.009999999776482582
-          Style: Flat Squares
+          Style: Points
           Topic: /d400/depth/color/points
           Unreliable: false
           Use Fixed Frame: true
@@ -405,25 +390,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.4895026683807373
+      Distance: 3.190012216567993
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.4663219153881073
-        Y: -0.2263355255126953
-        Z: -0.0046144528314471245
+        X: 0.5142754316329956
+        Y: 0.018659884110093117
+        Z: -0.008313847705721855
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.349799782037735
+      Pitch: 0.37479984760284424
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.5553882122039795
+      Yaw: 2.400383234024048
     Saved: ~
 Window Geometry:
   Displays:

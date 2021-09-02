@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="mode" default="husky"/>
+  <arg name="mode" default="osoyoo"/>
   <arg name="joy_dev" default="/dev/input/js0" />
   <arg name="joystick" default="true" />
 
