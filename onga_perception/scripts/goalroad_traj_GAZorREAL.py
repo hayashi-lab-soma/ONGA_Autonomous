@@ -115,9 +115,9 @@ class DetectCentroid(object):
         marker.scale.x = self.marker_scale
         marker.scale.y = self.marker_scale
         marker.scale.z = self.marker_scale
-        marker.color.r = 1.1
-        marker.color.g = 1.1
-        marker.color.b = 1.1
+        marker.color.r = 1.0
+        marker.color.g = 0.0
+        marker.color.b = 0.0
         marker.color.a = 1.0
         marker.lifetime = rospy.Duration(0.3,0)
         marker_pub.publish(marker)
@@ -220,12 +220,12 @@ class DetectCentroid(object):
             # ######################green_jetson_case######################
 
             #####################under_graduate_cirtification######################
-            cv2.createTrackbar("HUE Min", "Range HSV", 15,180, self.empty)#105,180 orange corn
-            cv2.createTrackbar("HUE Max", "Range HSV", 92,180, self.empty)#168,180
-            cv2.createTrackbar("SAT Min", "Range HSV", 71,255, self.empty)#22,255
-            cv2.createTrackbar("SAT Max", "Range HSV", 156,255, self.empty)#149,255
+            cv2.createTrackbar("HUE Min", "Range HSV", 19,180, self.empty)#105,180 orange corn
+            cv2.createTrackbar("HUE Max", "Range HSV", 67,180, self.empty)#168,180
+            cv2.createTrackbar("SAT Min", "Range HSV", 36,255, self.empty)#22,255
+            cv2.createTrackbar("SAT Max", "Range HSV", 75,255, self.empty)#149,255
             cv2.createTrackbar("VALUE Min", "Range HSV",0,255, self.empty)#0,255
-            cv2.createTrackbar("VALUE Max", "Range HSV", 30,255, self.empty)#50,255
+            cv2.createTrackbar("VALUE Max", "Range HSV", 19,255, self.empty)#50,255
             #####################under_graduate_cirtification######################
 
     def get_hsvcentroid(self):
@@ -286,8 +286,8 @@ class DetectCentroid(object):
                     self.send_traj_point_marker(marker_pub=self.object_pub, pose=new_pose)
 
                     masked_depth = np.zeros((self.H, self.W), dtype=np.uint16)
-                    mask_int = mask_image.astype(np.uint16)*255
-                    # mask_int = max_mask.astype(np.uint16)*255
+                    # mask_int = mask_image.astype(np.uint16)*255
+                    mask_int = max_mask.astype(np.uint16)*255
                     ret, thresh = cv2.threshold(mask_int, 127, 255, 0)
                     masked_depth[np.nonzero(thresh)] = depth_image[np.nonzero(thresh)]
                     points = self.depthToPointcloud(masked_depth) * self.scale
@@ -299,7 +299,7 @@ class DetectCentroid(object):
                     # pcd = o3d.io.read_point_cloud(points)
                     plane_model, inliers = downpcd.segment_plane(distance_threshold=0.5,
                                                             ransac_n=5,#gazebo : 50
-                                                            num_iterations=1000)
+                                                            num_iterations=5000)
                     [a, b, c, d] = plane_model
                     # o3d.visualization.draw_geometries([downpcd])
                     self.publish_notmalVector(self.arg_pub,a,c)
