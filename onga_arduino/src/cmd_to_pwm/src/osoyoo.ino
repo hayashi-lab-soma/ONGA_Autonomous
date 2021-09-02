@@ -30,10 +30,10 @@ void leftCB(const std_msgs::Int64& left_pwm)
   }
 }
 
-void rightCB( const std_msgs::Int64 right_pwm)
+void rightCB( const std_msgs::Int64& right_pwm)
 {
   int pwm = right_pwm.data;
-  if (pwm >= 0)
+  if (pwm <= 0)
   {
     analogWrite(ENB, abs(pwm));
     digitalWrite(IN3, LOW);
