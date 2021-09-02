@@ -12,8 +12,8 @@ class Test():
 
     # go straight
     def pub_linear(self):
-        dist = 0.5 # [m]
-        speed = 0.1 # [m/s]
+        dist = 1.0 # [m]
+        speed = 0.8 # [m/s]
         target_time = dist / speed # [s]
 
         t = Twist()
@@ -31,8 +31,8 @@ class Test():
 
     #rotate
     def pub_angular(self):
-        theta = 180.0 # [deg]
-        speed = 120.0 # [deg/s]
+        theta = 1000.0 # [deg]
+        speed = 600.0 # [deg/s]
         target_time = theta / speed # [s]
 
         t = Twist()
@@ -52,5 +52,5 @@ class Test():
 if __name__ == '__main__':
     rospy.init_node('tcmdvel_publisher')
     test = Test()
-    test.pub_linear()
-    # test.pub_angular()
+    # test.pub_linear()
+    test.pub_angular()

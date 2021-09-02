@@ -15,13 +15,14 @@ class Twist2duty():
         self.pwm_left = Int64()
         self.pwm_right = Int64()
         self.received_twist = None
+        self.min_duty = 35
         rospy.Subscriber('/onga_velocity_controller/cmd_vel', Twist, self.callback)
         self.pub_rpm_right = rospy.Publisher('/right_motor/rpm', Int64, queue_size=10)
         self.pub_duty_right = rospy.Publisher('/right_motor/duty', Int64, queue_size=10)
         self.pub_pwm_left = rospy.Publisher('/left_motor/pwm', Int64, queue_size=10)
         self.pub_rpm_left = rospy.Publisher('/left_motor/rpm', Int64, queue_size=10)
-        self.pub_duty_left = rospy.Publisher('/left_motor/duty', Float64, queue_size=10)
-        self.pub_pwm_right = rospy.Publisher('/right_motor/pwm', Float64, queue_size=10)
+        self.pub_duty_left = rospy.Publisher('/left_motor/duty', Int64, queue_size=10)
+        self.pub_pwm_right = rospy.Publisher('/right_motor/pwm', Int64, queue_size=10)
 
     def callback(self, message):
         rospy.loginfo("subscribed cmd_vel")
@@ -53,37 +54,54 @@ class Twist2duty():
 
 
     def rpm2duty(self, r_rpm, l_rpm):
-        max_rpm = 28.9 #規定値90%
+        max_rpm = 231 #100%
         max_duty = 100
-        min_rpm = 0 #規定値10%
-        min_duty = 0
+        min_rpm =  231*self.min_duty/100
+        min_duty = self.min_duty
         rpm_rate = (max_rpm-min_rpm)/(max_duty-min_duty)#1%に対するrpm
+        # rpm_rate = (max_rpm-min_rpm)/100
         
         ##right duty
-        if r_rpm >= 0:
+        if r_rpm > 0:
             r_duty = r_rpm / rpm_rate + min_duty
-        else:
-            r_duty = r_rpm / rpm_rate - min_duty  
+        elif r_rpm < 0:
+            r_duty = r_rpm / rpm_rate - min_duty 
+        elif r_rpm == 0:
+            r_duty = 0
         #速度制約
-        if r_duty > max_duty:
+        if r_duty >= max_duty:
             rospy.loginfo('Speed limit!!')
             r_duty = max_duty
         elif r_duty < (-1*max_duty):
             rospy.loginfo('Speed limit!!')
-            r_duty = -max_duty
+            r_duty = -1*max_duty
+        # elif 0 < r_duty < self.min_duty:
+        #     rospy.loginfo('Speed too small')
+        #     r_duty = 2*r_duty
+        # elif -1*self.min_duty < r_duty <0:
+        #     rospy.loginfo('Speed too small')
+        #     r_duty = -3*r_duty
 
         ##left duty
-        if l_rpm >= 0:
+        if l_rpm > 0:
             l_duty = l_rpm / rpm_rate + min_duty
-        else:
-            l_duty = l_rpm / rpm_rate - min_duty  
+        elif l_rpm < 0:
+            l_duty = l_rpm / rpm_rate - min_duty 
+        elif l_rpm == 0:
+            l_duty = 0
         #速度制約
         if l_duty > max_duty:
             rospy.loginfo('Speed limit!!')
             l_duty = max_duty
         elif l_duty < (-1*max_duty):
             rospy.loginfo('Speed limit!!')
-            l_duty = -max_duty
+            l_duty = -1*max_duty
+        # elif 0 < l_duty < self.min_duty:
+        #     rospy.loginfo('Speed too small')
+        #     l_duty = 3*l_duty
+        # elif -1*self.min_duty < l_duty < 0:
+        #     rospy.loginfo('Speed too small')
+        #     l_duty = -3*l_duty
 
         self.duty_right = r_duty
         self.duty_left = l_duty

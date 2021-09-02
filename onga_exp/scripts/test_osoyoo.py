@@ -27,7 +27,7 @@ class WpNavi():
 
         i = 0
         while not rospy.is_shutdown():
-            self.goal.target_pose.header.frame_id = 'base_footprint'
+            self.goal.target_pose.header.frame_id = 't265_odom_frame'
             self.goal.target_pose.header.stamp = rospy.Time.now()
             self.goal.target_pose.pose.position.x = self.way_point[i][0]
             self.goal.target_pose.pose.position.y = self.way_point[i][1]
