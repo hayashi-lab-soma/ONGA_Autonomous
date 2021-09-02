@@ -22,6 +22,10 @@
         <arg name="mode" default="$(arg mode)"/>
     </include>
     
+    <!-- start Arduino connection -->
     <include file="$(find onga_arduino)/launch/bringup_arduino.launch" />
+
+    <!-- start Rviz -->
+    <include file="$(find onga_viz)/launch/osoyoo.launch" />
 
 </launch>
