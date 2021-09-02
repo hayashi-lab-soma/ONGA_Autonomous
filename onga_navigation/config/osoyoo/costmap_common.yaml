@@ -30,4 +30,4 @@ obstacles_laser:
         # obstacle_max_z: 0.7
 
 inflation:
-    inflation_radius: 0.5
+    inflation_radius: 0.2
