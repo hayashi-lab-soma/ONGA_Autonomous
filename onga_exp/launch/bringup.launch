@@ -18,12 +18,13 @@
     <!-- <include file="$(find onga_perception)/launch/rtabmap.launch" /> -->
 
     <!-- start high level controller -->
-    <!-- <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch">
+    <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch">
         <arg name="mode" default="$(arg mode)"/>
-    </include> -->
+    </include>
     
     <!-- start Arduino connection -->
-    <!-- <include file="$(find onga_arduino)/launch/arduino_bringup.launch" /> -->
+    <include file="$(find onga_arduino)/launch/arduino_bringup.launch" />
+    <node pkg="onga_control" type="twist2pwm_osoyoo.py" name="twist2pwm_osoyoo" />
 
     <!-- start Rviz -->
     <include file="$(find onga_viz)/launch/osoyoo.launch" />
