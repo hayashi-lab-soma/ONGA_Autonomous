@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 import numpy as np
@@ -23,9 +23,9 @@ import glob
 from geometry_msgs.msg import Point,Pose,PoseStamped,PoseArray
 import ctypes
 
-import open3d as o3d
+# import open3d as o3d
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 import cv2.aruco as aruco
 
@@ -33,12 +33,12 @@ import cv2.aruco as aruco
 
 class DepthImageHandler(object):
     def __init__(self):
-        self.CAMINFO = {'topic': '/camera/color/camera_info', 'msg': CameraInfo}
+        self.CAMINFO = {'topic': '/d400/color/camera_info', 'msg': CameraInfo}
         self.isCamInfo = False
 
-        self.COLOR = {'topic': '/camera/color/image_raw', 'msg': Image}
-        self.DEPTH = {'topic': '/camera/aligned_depth_to_color/image_raw', 'msg': Image}
-        self.PC = {'topic': '/camera/depth/color/points', 'msg': PointCloud2}
+        self.COLOR = {'topic': '/d400/color/image_raw', 'msg': Image}
+        self.DEPTH = {'topic': '/d400/aligned_depth_to_color/image_raw', 'msg': Image}
+        self.PC = {'topic': '/d400/depth/color/points', 'msg': PointCloud2}
 
         # self.CAMINFO = {'topic': '/realsense/color/camera_info', 'msg': CameraInfo}
         # self.isCamInfo = False
@@ -61,7 +61,7 @@ class DepthImageHandler(object):
         self.mask           = np.empty((self.H, self.W), dtype=np.bool)
         self.mask_image     = np.empty((self.H, self.W), dtype=np.uint8)
         self.mask_depth     = np.empty((self.H, self.W), dtype=np.uint8)
-        self.cropPointCloud = o3d.geometry.PointCloud() 
+        # self.cropPointCloud = o3d.geometry.PointCloud() 
 
         self.camera_matrix = np.array([[0.0, 0, 0.0], [0, 0.0, 0.0], [0, 0, 1]], dtype=np.float32) 
         self.camera_distortion = np.array([0,0,0,0,0], dtype=np.float32)
