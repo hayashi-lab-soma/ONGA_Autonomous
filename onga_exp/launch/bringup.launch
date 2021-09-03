@@ -22,6 +22,11 @@
         <arg name="mode" default="$(arg mode)"/>
     </include>
     
-    <include file="$(find onga_arduino)/launch/bringup_arduino.launch" />
+    <!-- start Arduino connection -->
+    <include file="$(find onga_arduino)/launch/arduino_bringup.launch" />
+    <node pkg="onga_control" type="twist2pwm_osoyoo.py" name="twist2pwm_osoyoo" />
+
+    <!-- start Rviz -->
+    <include file="$(find onga_viz)/launch/osoyoo.launch" />
 
 </launch>

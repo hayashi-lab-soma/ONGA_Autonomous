@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="onga_perception" type="marker_realsense.py" name="marker_realsense" />
+    <node pkg="onga_perception" type="markerBoardCast_realsense.py" name="markerBoardCast_realsense" />
+</launch>
