@@ -61,6 +61,7 @@
     cd ~/onga_ws/src
     git clone https://github.com/hayashi-lab-soma/ONGA_Autonomous.git
     catkin build
+    source ~/.bashrc
     ```
     ```
     ##Arduinoへのソース書き込み##
