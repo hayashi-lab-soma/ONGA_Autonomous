@@ -48,7 +48,7 @@
 ## 本パッケージのインストール
     ```
     ##onga_wsの作成
-    mkdir ~/onga_ws/src
+    mkdir -p ~/onga_ws/src
     cd ~/onga_ws/src
     catkin_init_workspace
     cd ..
