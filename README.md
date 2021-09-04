@@ -1,5 +1,6 @@
 # ONGA_Autonomous
-壁面吸引ロボット自律化に関するROSパッケージ
+壁面吸引ロボット自律化に関するROSパッケージ \
+最終更新日：2021/09/04
 
 ## 使用するセンサ
 * Intel Realsense D435i
@@ -10,8 +11,13 @@
 * ROS melodic
 * RealsenseSDK 2.0 
 
-## セットアップ方法
-最終更新日：2021/07/25
+## 外部パッケージ、必要なツールのインストール
+* catkin buildのインストール
+    ```
+    sudo apt update
+    sudo apt install python-catkin-tools
+    ```
+    
 * Husky ROSパッケージのインストール
     ```
     sudo apt install ros-melodic-husky-gazebo ros-melodic-husky-viz ros-melodic-husky-control
@@ -20,7 +26,26 @@
     ```
     sudo apt install ros-melodic-rtabmap-ros
     ```
-* 本パッケージのダウンロード
+* Aruduino セットアップ \
+    本パッケージでは統合開発環境ArduinoIDEを使用しない。\
+    Platformioを使用してコンパイル、Aruduinoへの書き込みを行う
+    ```
+    ##platformioのインストール##
+    curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py -o get-platformio.py
+    python3 get-platformio.py
+
+    ##pipのアップグレード
+    pip3 install --upgrade pip
+    
+    ##platformioをインストール
+    pip3 install platformio
+    
+    ##インストール完了の確認
+    pio --version
+    #PlatformIO Core, version 5.1.1
+    ```
+    
+## 本パッケージのインストール
     ```
     ##onga_wsの作成
     mkdir ~/onga_ws/src
@@ -37,35 +62,11 @@
     git clone https://github.com/hayashi-lab-soma/ONGA_Autonomous.git
     catkin build
     ```
-* catkin buildを未インストールの場合
-    ```
-    sudo apt update
-    sudo apt install python-catkin-tools
-    ```
-
-* Aruduino セットアップ \
-    本パッケージでは統合開発環境ArduinoIDEを使用しない。\
-    Platformioを使用してコンパイル、Aruduinoへの書き込みを行う
-    ```
-    ##platformioのインストール##
-    curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py -o get-platformio.py
-    python3 get-platformio.py
-
-
-    ##pipのアップグレード
-    pip3 install --upgrade pip
-    
-    ##platformioをインストール
-    pip3 install platformio
-    
-    ##インストール完了の確認
-    pio --version
-    #PlatformIO Core, version 5.1.1
-    ```
     ```
     ##Arduinoへのソース書き込み##
     rosrun onga_arduino write_cmd2pwm.sh
     ```
+    
 
 ## パッケージ内容
 ### ・onga_arduino
