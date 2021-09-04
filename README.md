@@ -20,7 +20,7 @@
     
 * Husky ROSパッケージのインストール
     ```
-    sudo apt install ros-melodic-husky-gazebo ros-melodic-husky-viz ros-melodic-husky-control
+    sudo apt install ros-melodic-husky-gazebo ros-melodic-husky-viz ros-melodic-husky-navigation
     ```
 * RTAB-MApのインストール
     ```
