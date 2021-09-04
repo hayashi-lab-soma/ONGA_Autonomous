@@ -43,6 +43,9 @@
     ##インストール完了の確認
     pio --version
     #PlatformIO Core, version 5.1.1
+    
+    sudo usermod -a -G dialout <username>
+    sudo chmod a+rw /dev/ttyACM0
     ```
     
 ## 本パッケージのインストール
