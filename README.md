@@ -58,7 +58,7 @@
     source ~/.bashrc
 
     ##ONGA_Autonomousのインストール
-    cd ~onga_ws/src
+    cd ~/onga_ws/src
     git clone https://github.com/hayashi-lab-soma/ONGA_Autonomous.git
     catkin build
     ```
