@@ -26,6 +26,11 @@
     ```
     sudo apt install ros-melodic-rtabmap-ros
     ```
+* rosseral
+    ```
+    sudo apt install ros-melodic-rosserial
+    sudo apt install ros-melodic-rosserial-arduino
+    ```
 * Aruduino セットアップ \
     本パッケージでは統合開発環境ArduinoIDEを使用しない。\
     Platformioを使用してコンパイル、Aruduinoへの書き込みを行う
