@@ -131,11 +131,4 @@ Rvizによる描画パッケージ
 
 
 ### 実機による検証
-1. Aruduinoを動かしてみる
-    ```
-    #terminal その１
-    roscore
 
-    #terminal その２
-    rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0
-    ```
