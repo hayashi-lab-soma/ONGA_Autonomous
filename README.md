@@ -70,7 +70,6 @@
     rosrun onga_arduino write_cmd2pwm.sh
     ```
     
-
 ## パッケージ内容
 ### ・onga_arduino
 AruduinoによるPWM出力制御パッケージ
