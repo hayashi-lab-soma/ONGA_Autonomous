@@ -1,6 +1,6 @@
 # ONGA_Autonomous
 壁面吸引ロボット自律化に関するROSパッケージ \
-最終更新日：2021/09/04
+最終更新日：2021/09/06
 
 ## 使用するセンサ
 * Intel Realsense D435i
@@ -104,31 +104,16 @@ Rvizによる描画パッケージ
 
 ## パッケージの使い方
 ### Gazeboシミュレーション
-1. シミュレーションをとりあえず動かすとき(大まかには以下の３機能が開始される) \
-    ・Gazebo空間生成 \
-    ・RVizにて可視化 \
-    ・機体のコントロール \
-    ```
-    roslaunch onga_control product_sim.launch
-    ```
+Huskyの機体のみ対応しています。 \
+・Gazebo空間生成 \
+・RVizにて可視化 \
+・機体のコントロール 
+```
+roslaunch onga_control sim_full.launch
+```
 
-2. 機能ごとにそれぞれを立ち上げるとき \
-    ・Gazebo空間生成 
-    ```
-    ##terminalその１で##
-    roslaunch onga_gazebo onga_playpen.launch
-    ```
-    ・Rvizにて可視化 
-    ```
-    ##terminalその２で##
-    roslaunch onga_viz view_robot.launch
-    ```
-    ・機体のコントロール 
-    ```
-    ##terminalその３で##
-    roslaunch onga_navigation move_base_mapless_demo.launch
-    ```
-
-
-### 実機による検証
-
+### Osoyooロボットを動かす
+RealsenseとArduinoをPCに接続してないと動作しません。
+```
+roslaunch onga_exp bringup.launch
+```
