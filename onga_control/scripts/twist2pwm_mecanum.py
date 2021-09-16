@@ -1,37 +1,41 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import rospy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int64, Float64
 import numpy as np
+import math
 
 class Twist2duty():
     def __init__(self):
         # FrontRight...0, FrontLeft...1, RearRight...2, RearLeft...3
         rospy.init_node("twist2duty", anonymous= True)
-        self.rpm = []
-        self.duty = []
-        self.pwm = []
+        self.rpm = [0, 0, 0, 0]
+        self.duty = [0, 0, 0, 0]
+        self.pwm = [0, 0, 0, 0]
         self.received_twist = None
         self.min_duty = 35
-        self.wheel_radius = 0.033
-        self.pi = 3.1415
+        self.wheel_radius = 0.050
 
         self.ww=0.13  #width/2 [m]
         self.lw=0.115  #length/2 [m]
-        self.a = np.zeros((4,3))
-        self.a[0][0] = 1/(wheel_radius*tan(alpha/180*pi)) 
-        self.a[0][1] = 1/wheel_radius
-        self.a[0][2] = (-1*(lw+ww)/(wheel_radius))
-        self.a[1][0] = 1/(wheel_radius*tan(alpha/180*pi))
-        self.a[1][1] = -1/wheel_radius
-        self.a[1][2] = (lw+ww)/(wheel_radius)
-        self.a[2][0] = 1/(wheel_radius*tan(alpha/180*pi))
-        self.a[2][1] = -1/wheel_radius
-        self.a[2][2] = (-1*(lw+ww)/(wheel_radius))
-        self.a[3][0] = 1/(wheel_radius*tan(alpha/180*pi))
-        self.a[3][1] = 1/wheel_radius
-        self.a[3][2] = (lw+ww)/(wheel_radius)
+        self.alpha_deg = 45 #degree of mecanum roller
+        self.alpha_rad = math.radians(self.alpha_deg)
+
+        self.a = np.zeros((4,3)) #determinant
+        self.a[0][0] = 1/(self.wheel_radius*math.tan(self.alpha_rad)) 
+        self.a[0][1] = 1/self.wheel_radius
+        self.a[0][2] = (-1*(self.lw+self.ww)/(self.wheel_radius))
+        self.a[1][0] = 1/(self.wheel_radius*math.tan(self.alpha_rad))
+        self.a[1][1] = -1/self.wheel_radius
+        self.a[1][2] = (self.lw+self.ww)/(self.wheel_radius)
+        self.a[2][0] = 1/(self.wheel_radius*math.tan(self.alpha_rad))
+        self.a[2][1] = -1/self.wheel_radius
+        self.a[2][2] = (-1*(self.lw+self.ww)/(self.wheel_radius))
+        self.a[3][0] = 1/(self.wheel_radius*math.tan(self.alpha_rad))
+        self.a[3][1] = 1/self.wheel_radius
+        self.a[3][2] = (self.lw+self.ww)/(self.wheel_radius)
 
         rospy.Subscriber('/onga_velocity_controller/cmd_vel', Twist, self.callback)
         self.pub_fr_rpm = rospy.Publisher('/fr/rpm', Int64, queue_size=10)
@@ -63,10 +67,10 @@ class Twist2duty():
         v_y = self.received_twist.linear.y#(m/s)
         omega = self.received_twist.angular.z#(rad/s)
 
-        v_fr = (self.a[0][0]*v_x + self.a[0][1]*v_y + self.a[0][2]*omega) *self.wheel_radius*pi  #[m/s]
-        v_fl = (self.a[1][0]*v_x + self.a[1][1]*v_y + self.a[1][2]*omega) *self.wheel_radius*pi  #[m/s]
-        v_rr = (self.a[3][0]*v_x + self.a[3][1]*v_y + self.a[3][2]*omega) *self.wheel_radius*pi  #[m/s]
-        v_rl = (self.a[2][0]*v_x + self.a[2][1]*v_y + self.a[2][2]*omega) *self.wheel_radius*pi  #[m/s]
+        v_fr = (self.a[0][0]*v_x + self.a[0][1]*v_y + self.a[0][2]*omega) *self.wheel_radius*math.pi  #[m/s]
+        v_fl = (self.a[1][0]*v_x + self.a[1][1]*v_y + self.a[1][2]*omega) *self.wheel_radius*math.pi  #[m/s]
+        v_rr = (self.a[3][0]*v_x + self.a[3][1]*v_y + self.a[3][2]*omega) *self.wheel_radius*math.pi  #[m/s]
+        v_rl = (self.a[2][0]*v_x + self.a[2][1]*v_y + self.a[2][2]*omega) *self.wheel_radius*math.pi  #[m/s]
         self.rpm[0] = 60 * v_fr * gear_rate
         self.rpm[1] = 60 * v_fl * gear_rate
         self.rpm[2] = 60 * v_rr * gear_rate
@@ -74,6 +78,10 @@ class Twist2duty():
 
 
     def rpm2duty(self):
+        fr_rpm = self.rpm[0]
+        fl_rpm = self.rpm[1]
+        rr_rpm = self.rpm[2] 
+        rl_rpm = self.rpm[3]
         max_rpm = 231 #100%
         max_duty = 100
         min_rpm =  231*self.min_duty/100
