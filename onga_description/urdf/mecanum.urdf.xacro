@@ -4,7 +4,7 @@
 	<include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
 	
 	<!-- parameters -->
-	<xacro:arg name="rs_mount_xyz" default="0.087 0.0 0.08" />
+	<xacro:arg name="rs_mount_xyz" default="0.155 0.0 0.16" />
   	<xacro:arg name="rs_mount_rpy" default="0.0 0.0 0.0" />
 	<xacro:arg name="d400_xyz" default="0.0 0.0 0.0" />
   	<xacro:arg name="d400_rpy" default="0.0 0.1745 0.0" />
@@ -16,7 +16,7 @@
 	<material name="red">
 		<color rgba="1.0 0.0 0.0 2.5"/>
 	</material>
-	<xacro:macro name="wheel_macro" params="parent prefix xyz">
+	<xacro:macro name="front_wheel_macro" params="parent prefix xyz">
 		<joint name="${prefix}_joint" type="continuous">
 		<origin xyz="${xyz}" rpy="${radians(-90)} 0 0"/>
 		<parent link="${parent}"/>
@@ -26,7 +26,23 @@
 		<link name="${prefix}_link">
 			<visual>
 				<geometry>
-					<cylinder radius="0.033" length="0.025" />
+					<cylinder radius="0.20" length="0.078" />
+				</geometry>
+				<material name="red"/>
+			</visual>
+		</link>
+  	</xacro:macro>
+		<xacro:macro name="rear_wheel_macro" params="parent prefix xyz">
+		<joint name="${prefix}_joint" type="continuous">
+		<origin xyz="${xyz}" rpy="${radians(-90)} 0 0"/>
+		<parent link="${parent}"/>
+		<child  link="${prefix}_link"/>
+		<axis xyz="0 0 1" />
+		</joint>
+		<link name="${prefix}_link">
+			<visual>
+				<geometry>
+					<cylinder radius="0.10" length="0.051" />
 				</geometry>
 				<material name="red"/>
 			</visual>
@@ -39,26 +55,26 @@
 	<joint name="base_footprint_joint" type="fixed">
 		<parent link="base_link" />
 		<child link="base_footprint" />
-		<origin xyz="0.0 0.0 -0.03" rpy="0.0 0.0 0.0" />
+		<origin xyz="0.0 0.0 -0.1" rpy="0.0 0.0 0.0" />
 	</joint>
 	<joint name="body_joint" type="fixed">
 		<parent link="base_link"/>
 		<child  link="body_link"/>
-		<origin xyz="0.0 0.0 0.057" rpy="0 0 0"/>
+		<origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
   	</joint>
 	<link name="body_link">
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0" />
 			<geometry>
-				<box size="0.11 0.115 0.114" />
+				<box size="0.55 0.42 0.20" />
 			</geometry>
 			<material name="gray" />
 		</visual>
  	 </link>
-	<xacro:wheel_macro prefix="front_left_wheel_link"  parent="base_link" xyz="0.05 0.07 0.0"/>
-	<xacro:wheel_macro prefix="front_right_wheel_link" parent="base_link" xyz="0.05 -0.07 0.0"/>
-	<xacro:wheel_macro prefix="rear_left_wheel_link"  parent="base_link" xyz="-0.05 0.07 0.0"/>
-	<xacro:wheel_macro prefix="rear_right_wheel_link" parent="base_link" xyz="-0.05 -0.07 0.0"/>
+	<xacro:front_wheel_macro prefix="front_left_wheel_link"  parent="base_link" xyz="0.215 0.25 0.0"/>
+	<xacro:front_wheel_macro prefix="front_right_wheel_link" parent="base_link" xyz="0.215 -0.25 0.0"/>
+	<xacro:rear_wheel_macro prefix="rear_left_wheel_link"  parent="base_link" xyz="-0.215 0.25 -0.055"/>
+	<xacro:rear_wheel_macro prefix="rear_right_wheel_link" parent="base_link" xyz="-0.215 -0.25 -0.055"/>
 
 	<link name="rs_mount_link" />
 	<joint name="mount_base_joint" type="fixed">
