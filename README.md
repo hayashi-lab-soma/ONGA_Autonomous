@@ -49,6 +49,7 @@
     pio --version
     #PlatformIO Core, version 5.1.1
     
+    ##arduinoをつないだ状態で
     sudo usermod -a -G dialout <username>
     sudo chmod a+rw /dev/ttyACM0
     ```
