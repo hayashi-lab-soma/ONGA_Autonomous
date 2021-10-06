@@ -15,7 +15,7 @@ class Twist2duty():
         self.pwm_left = Int64()
         self.pwm_right = Int64()
         self.received_twist = None
-        self.min_duty = 35
+        self.min_duty = 0.15
         rospy.Subscriber('/onga_velocity_controller/cmd_vel', Twist, self.callback)
         self.pub_rpm_right = rospy.Publisher('/right_motor/rpm', Int64, queue_size=10)
         self.pub_duty_right = rospy.Publisher('/right_motor/duty', Int64, queue_size=10)
@@ -39,8 +39,8 @@ class Twist2duty():
         axle_length = 0.1#axle_size(2d)
         gear_rate = 1.0
 
-        v = data.linear.x#(m/s)
-        omega = data.angular.z#(rad/s)
+        v = 2*data.linear.x#(m/s)
+        omega = 2*data.angular.z#(rad/s)
         v_r = (omega*axle_length + 2*v)/2
         v_l = (omega*axle_length - 2*v)/(-2)
 
@@ -54,12 +54,12 @@ class Twist2duty():
 
 
     def rpm2duty(self, r_rpm, l_rpm):
-        max_rpm = 231 #100%
+        max_rpm = 57 #100%
         max_duty = 100
-        min_rpm =  231*self.min_duty/100
+        min_rpm = max_rpm*self.min_duty/100
         min_duty = self.min_duty
-        rpm_rate = (max_rpm-min_rpm)/(max_duty-min_duty)#1%に対するrpm
-        # rpm_rate = (max_rpm-min_rpm)/100
+        # rpm_rate = (max_rpm-min_rpm)/(max_duty-min_duty)#1%に対するrpm
+        rpm_rate = (max_rpm-min_rpm)/100
         
         ##right duty
         if r_rpm > 0:
