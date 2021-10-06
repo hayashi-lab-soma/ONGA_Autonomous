@@ -31,9 +31,9 @@
     sudo apt install ros-melodic-rosserial
     sudo apt install ros-melodic-rosserial-arduino
     ```
-* Aruduino セットアップ \
+* Arduino セットアップ \
     本パッケージでは統合開発環境ArduinoIDEを使用しない。\
-    Platformioを使用してコンパイル、Aruduinoへの書き込みを行う
+    Platformioを使用してコンパイル、Arduinoへの書き込みを行う
     ```
     ##platformioのインストール##
     curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py -o get-platformio.py
@@ -56,7 +56,7 @@
     
 ## 本パッケージのインストール
 ワークスペースのディレクトリを作成し、githubからソースをダウンロードした後、ビルドします。
-また、Aruduinoにソースを書き込みます。
+また、Arduinoにソースを書き込みます。
     ```
     ##onga_wsの作成
     mkdir -p ~/onga_ws/src
@@ -80,7 +80,7 @@
     
 ## パッケージ内容
 ### ・onga_arduino
-AruduinoによるPWM出力制御パッケージ \
+ArduinoによるPWM出力制御パッケージ \
 ボードへの書き込み機能、書き込むソースを含む
 
 ### ・onga_control
