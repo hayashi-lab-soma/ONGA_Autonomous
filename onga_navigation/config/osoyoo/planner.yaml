@@ -7,14 +7,14 @@ NavfnROS:
 
 TrajectoryPlannerROS:
   # Robot Configuration Parameters
-  acc_lim_x: 1.0
-  acc_lim_theta:  1.5
+  acc_lim_x: 0.5
+  acc_lim_theta:  0.5
 
-  max_vel_x: 1.0
+  max_vel_x: 0.25
   min_vel_x: 0.0
 
-  max_vel_theta: 2.0
-  min_vel_theta: -2.0
+  max_vel_theta: 1.0
+  min_vel_theta: 0.5
   min_in_place_vel_theta: 0.4
 
   holonomic_robot: false
@@ -53,9 +53,9 @@ TrajectoryPlannerROS:
 
 DWAPlannerROS:
   # Robot configuration parameters  
-  acc_lim_x: 1.0
+  acc_lim_x: 0.5
   acc_lim_y: 0
-  acc_lim_th: 1.5
+  acc_lim_th: 0.5
 
   max_vel_x: 0.25
   min_vel_x: 0.0
@@ -65,11 +65,11 @@ DWAPlannerROS:
   max_trans_vel: 0.25
   min_trans_vel: 0.1
   max_rot_vel: 1.0
-  min_rot_vel: 0.2
+  min_rot_vel: 0.5
 
   # Goal Tolerance Parameters
-  yaw_goal_tolerance: 0.05
-  xy_goal_tolerance: 0.1
+  yaw_goal_tolerance: 0.6
+  xy_goal_tolerance: 0.05
   latch_xy_goal_tolerance: false
 
   # # Forward Simulation Parameters
