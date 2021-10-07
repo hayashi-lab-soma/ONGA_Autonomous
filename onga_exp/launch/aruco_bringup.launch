@@ -2,4 +2,5 @@
 <launch>
     <node pkg="onga_perception" type="marker_realsense.py" name="marker_realsense" />
     <node pkg="onga_perception" type="markerBoardCast_realsense.py" name="markerBoardCast_realsense" />
+    <node pkg="onga_exp" type="test_osoyoo_aruco.py" name="test_osoyoo_aruco" />
 </launch>
