@@ -4,12 +4,12 @@
 
     <!-- start low level controller -->
     <include file="$(find onga_control)/launch/control.launch">
-        <arg name="mode" default="$(arg mode)"/>
+        <param name="mode" default="$(arg mode)"/>
     </include>
 
     <!-- start joystick controller -->
     <include file="$(find onga_control)/launch/teleop.launch">
-        <arg name="mode" default="$(arg mode)"/>
+        <param name="mode" default="$(arg mode)"/>
     </include>
 
     <!-- start sensor -->
@@ -19,7 +19,7 @@
 
     <!-- start high level controller -->
     <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch">
-        <arg name="mode" default="$(arg mode)"/>
+        <param name="mode" default="$(arg mode)"/>
     </include>
     
     <!-- start Arduino connection -->
@@ -27,6 +27,8 @@
     <node pkg="onga_control" type="twist2pwm_osoyoo.py" name="twist2pwm_osoyoo" />
 
     <!-- start Rviz -->
-    <include file="$(find onga_viz)/launch/osoyoo.launch" />
+    <include file="$(find onga_viz)/launch/view_robot.launch" >
+        <param name="mode" value="$(arg mode)"/>
+    </include>
 
 </launch>

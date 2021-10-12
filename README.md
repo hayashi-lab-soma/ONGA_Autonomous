@@ -31,9 +31,9 @@
     sudo apt install ros-melodic-rosserial
     sudo apt install ros-melodic-rosserial-arduino
     ```
-* Aruduino セットアップ \
+* Arduino セットアップ \
     本パッケージでは統合開発環境ArduinoIDEを使用しない。\
-    Platformioを使用してコンパイル、Aruduinoへの書き込みを行う
+    Platformioを使用してコンパイル、Arduinoへの書き込みを行う
     ```
     ##platformioのインストール##
     curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py -o get-platformio.py
@@ -49,13 +49,14 @@
     pio --version
     #PlatformIO Core, version 5.1.1
     
+    ##arduinoをつないだ状態で
     sudo usermod -a -G dialout <username>
     sudo chmod a+rw /dev/ttyACM0
     ```
     
 ## 本パッケージのインストール
 ワークスペースのディレクトリを作成し、githubからソースをダウンロードした後、ビルドします。
-また、Aruduinoにソースを書き込みます。
+また、Arduinoにソースを書き込みます。
     ```
     ##onga_wsの作成
     mkdir -p ~/onga_ws/src
@@ -79,25 +80,31 @@
     
 ## パッケージ内容
 ### ・onga_arduino
-AruduinoによるPWM出力制御パッケージ
+ArduinoによるPWM出力制御パッケージ \
+ボードへの書き込み機能、書き込むソースを含む
 
 ### ・onga_control
-機体制御用パッケージ
+機体制御用パッケージ \
+ロボットのコントロール起動用スクリプト、コントロール用設定ファイル、リモコン制御等を含む
 
 ### ・onga_description
-Gazeboシミュレーション用の機体仕様パッケージ
+Gazeboシミュレーション用の機体仕様パッケージ \
+ロボットの座標リンク定義ファイルを含む
 
 ### ・onga_exp
-実験用パッケージ
+実験用パッケージ \
+bringupやテスト用の各種実験用スクリプトを含む
 
 ### ・onga_gazebo
 Gazeboシミュレーション制御パッケージ
 
 ### ・onga_navigation
-ナビゲーションシステムパッケージ
+ナビゲーションシステムパッケージ \
+move_base設定ファイルを含む
 
 ### ・onga_perception
-センサ処理等のロボット知覚に関するパッケージ
+センサ処理等のロボット知覚に関するパッケージ \
+Arucoマーカーの検出やホームポジション座標のpublish機能を含む
 
 ### ・onga_viz
 Rvizによる描画パッケージ
