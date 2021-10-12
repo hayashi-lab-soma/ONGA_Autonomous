@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="mode" default="osoyoo"/>
+
+    <!-- start low level controller -->
+    <include file="$(find onga_control)/launch/control.launch">
+        <param name="mode" default="$(arg mode)"/>
+    </include>
+
+    <!-- start joystick controller -->
+    <include file="$(find onga_control)/launch/teleop.launch">
+        <param name="mode" default="$(arg mode)"/>
+    </include>
+
+    <!-- start sensor -->
+    <include file="$(find onga_exp)/launch/realsense.launch" />
+    <include file="$(find onga_perception)/launch/cloud2laserscan.launch" />
+    <!-- <include file="$(find onga_perception)/launch/rtabmap.launch" /> -->
+
+    <!-- start high level controller -->
+    <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch">
+        <param name="mode" default="$(arg mode)"/>
+    </include>
+    
+    <!-- start Arduino connection -->
+    <include file="$(find onga_arduino)/launch/arduino_bringup.launch" />
+    <node pkg="onga_control" type="twist2pwm_osoyoo.py" name="twist2pwm_osoyoo" />
+
+    <!-- start Rviz -->
+    <include file="$(find onga_viz)/launch/view_robot.launch" >
+        <param name="mode" value="$(arg mode)"/>
+    </include>
+
+</launch>

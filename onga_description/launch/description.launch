@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- robot_mode : husky, osoyoo -->
+  <arg name="mode" default="osoyoo"/>
+  <arg name="unique" default="true"/>
+
+  <arg name="robot_namespace" default="/"/>
+  <arg name="laser_enabled" default="false"/>
+  <arg name="realsense_enabled" default="true"/>
+  <arg name="urdf_extras" default=""/>
+
+  <group if="$(eval mode == 'husky')">
+    <param name="robot_description" command="$(find xacro)/xacro '$(find husky_description)/urdf/husky.urdf.xacro'
+      robot_namespace:=$(arg robot_namespace)
+      laser_enabled:=$(arg laser_enabled)
+      realsense_enabled:=$(arg realsense_enabled)
+      urdf_extras:=$(arg urdf_extras)" 
+    />
+  </group>
+
+  <group if="$(eval mode == 'osoyoo')">
+    <param name="robot_description" command="$(find xacro)/xacro '$(find onga_description)/urdf/osoyoo.urdf.xacro'" />
+  </group>
+
+  <group if="$(arg unique)">
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+</launch>

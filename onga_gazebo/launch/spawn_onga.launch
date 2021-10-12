@@ -1,0 +1,45 @@
+<launch>
+  <arg name="mode" default="husky"/>
+  <arg name="robot_namespace" default="/"/>
+
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.0"/>
+  <arg name="yaw" default="0.0"/>
+
+  <arg name="laser_enabled" default="false"/>
+  <arg name="realsense_enabled" default="false"/>
+  <arg name="urdf_extras" default=""/>
+
+  <arg name="joystick" default="true" />
+
+  <group ns="$(arg robot_namespace)">
+    <include file="$(find onga_control)/launch/control.launch">
+      <arg name="mode" value="$(arg mode)"/>
+      <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+      <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
+      <arg name="enable_ekf" value="true"/>
+      <arg name="urdf_extras" value="$(arg urdf_extras)"/>
+    </include>
+    <include file="$(find onga_control)/launch/teleop.launch">
+      <arg name="mode" value="$(arg mode)"/>
+      <arg name="joystick" value="$(arg joystick)" />
+    </include>
+
+    <group if="$(arg realsense_enabled)">
+      <include file="$(find onga_gazebo)/launch/realsense.launch" />
+    </group>
+
+    <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
+        args="-x $(arg x)
+              -y $(arg y)
+              -z $(arg z)
+              -Y $(arg yaw)
+              -unpause
+              -urdf
+              -param robot_description
+              -model $(arg robot_namespace)" />
+
+  </group>
+
+</launch>

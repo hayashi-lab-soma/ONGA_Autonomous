@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- robot_mode : husky, osoyoo -->
+  <arg name="mode" default="osoyoo"/>
+
+  <arg name="robot_namespace" default="robot"/>
+  <arg name="enable_ekf" default="false"/>
+
+  <arg name="laser_enabled" default="false"/>
+  <arg name="realsense_enabled" default="true"/>
+  <arg name="urdf_extras" default=""/>
+
+  <!-- Load robot description -->
+  <include file="$(find onga_description)/launch/description.launch" >
+    <arg name="mode" value="$(arg mode)"/>
+    <arg name="unique" default="false"/>
+    <arg name="laser_enabled" default="$(arg laser_enabled)"/>
+    <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
+    <arg name="urdf_extras" default="$(arg urdf_extras)"/>
+  </include>
+
+  <!-- Load controller configuration -->
+  <rosparam command="load" file="$(find onga_control)/config/$(arg mode)/control.yaml" />
+
+  <!-- Spawn controllers -->
+  <node name="base_controller_spawner" pkg="controller_manager" type="spawner"
+        args="onga_joint_publisher onga_velocity_controller"/>
+
+  <!-- Start EKF for localization -->
+  <group if="$(arg enable_ekf)" >
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+      <rosparam command="load" file="$(find onga_control)/config/$(arg mode)/localization.yaml" />
+    </node>
+  </group>
+
+  <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+    <rosparam command="load" file="$(find onga_control)/config/$(arg mode)/twist_mux.yaml" />
+    <remap from="cmd_vel_out" to="onga_velocity_controller/cmd_vel"/>
+  </node>
+
+  <!-- Override the default control parameters, see config/empty.yaml for default. -->
+  <rosparam command="load" file="$(find onga_control)/config/$(arg mode)/empty.yaml" />
+
+</launch>

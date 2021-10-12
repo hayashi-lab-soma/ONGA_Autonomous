@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="mode" default="osoyoo"/>
+
+    <node pkg="onga_exp" type="waypoint_demo_leave.py" name="waypoint_demo_leave" />
+    <!-- start go back 0.2 0  -->
+    <node pkg="onga_exp" type="waypoint_demo_perser.py" name="waypoint_demo_perser" output="screen">
+        <param name="x" value="0.3" />
+        <param name="y" value="0.0" />
+        <param name="angular" value="0.0" />
+    </node>
+    <!-- start go back aruco -->
+
+</launch>

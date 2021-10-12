@@ -1,0 +1,13 @@
+{
+  "python.autoComplete.extraPaths": [
+    "/home/hayashi/onga_ws/devel/lib/python2.7/dist-packages",
+    "/opt/ros/melodic/lib/python2.7/dist-packages",
+    "/usr/local/lib/python3.6/site-packages/",
+  ],
+  "python.analysis.extraPaths": [
+    "/home/hayashi/onga_ws/devel/lib/python2.7/dist-packages",
+    "/opt/ros/melodic/lib/python2.7/dist-packages",
+    "/usr/local/lib/python3.6/site-packages/"
+  ],
+  "ros.distro": "melodic"
+}
