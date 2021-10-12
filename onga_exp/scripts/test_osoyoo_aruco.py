@@ -44,7 +44,7 @@ class ArucoNavi():
         aruco_pose.pose.orientation.w = quat[3]
 
         aruco_transformed = self.listner.transformPose("t265_odom_frame", aruco_pose)
-        self.way_point[0] = aruco_transformed.pose.position.x
+        self.way_point[0] = aruco_transformed.pose.position.x - 0.2
         self.way_point[1] = aruco_transformed.pose.position.y
         self.way_point[2] = 0.0
 
