@@ -9,6 +9,7 @@ import message_filters
 from cv_bridge import CvBridge, CvBridgeError
 from std_msgs.msg import Image
 
+print("FFFF")
 class depth_estimater:
     WIDTH = 12
     HEIGHT = 6
