@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- ロボット起動用スクリプトファイル（低レベルコントローラ、リモコン制御、センサ処理、ナビゲーションシステム、Rvizの描画を起動） -->
 <launch>
     <arg name="mode" default="osoyoo"/>
 

@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- リモコン制御起動用スクリプト（yamlファイルにボタン割り当てを定義） -->
 <launch>
   <arg name="mode" default="osoyoo"/>
   <arg name="joy_dev" default="/dev/input/js0" />
