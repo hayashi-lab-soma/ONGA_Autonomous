@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- 低レベルコントローラ起動用スクリプト（ロボットの座標フレーム定義、速度制御パッケージを起動） -->
 <launch>
   <!-- robot_mode : husky, osoyoo -->
   <arg name="mode" default="osoyoo"/>

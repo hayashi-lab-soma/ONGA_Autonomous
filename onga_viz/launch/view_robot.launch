@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- Rvizによる描画を起動（modeによって読み込まれる設定ファイルが異なる） -->
 <launch>
   <arg name="mode" default="osoyoo"/>
 
