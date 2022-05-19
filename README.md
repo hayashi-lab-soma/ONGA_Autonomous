@@ -1,37 +1,41 @@
 # ONGA_Autonomous
 壁面吸引ロボット自律化に関するROSパッケージ \
-最終更新日：2021/09/06
+最終更新日：2022/05/19
 
-## 使用するセンサ
-* Intel Realsense D435i
-* Intel Realsense T265
+## Topics
+- 環境構築編
+- パッケージ概要編
+- 実行編
 
-## 要求要件
-* Ubuntu18.04
-* ROS melodic
-* RealsenseSDK 2.0 
+## 環境構築編
+### 要求要件
+- Intel Realsense D435i
+- Intel Realsense T265
+- Ubuntu18.04
+- ROS melodic
+- RealsenseSDK 2.0 
 
-## 外部パッケージ、必要なツールのインストール
-* catkin buildのインストール
+### 外部パッケージ、必要なツールのインストール
+- catkin buildのインストール
     ```
     sudo apt update
     sudo apt install python-catkin-tools
     ```
     
-* Husky ROSパッケージのインストール
+- Husky ROSパッケージのインストール
     ```
     sudo apt install ros-melodic-husky-gazebo ros-melodic-husky-viz ros-melodic-husky-navigation
     ```
-* RTAB-MApのインストール
+- RTAB-MApのインストール
     ```
     sudo apt install ros-melodic-rtabmap-ros
     ```
-* rosseral
+- rosseral
     ```
     sudo apt install ros-melodic-rosserial
     sudo apt install ros-melodic-rosserial-arduino
     ```
-* Arduino セットアップ \
+- Arduino セットアップ \
     本パッケージでは統合開発環境ArduinoIDEを使用しない。\
     Platformioを使用してコンパイル、Arduinoへの書き込みを行う
     ```
@@ -54,7 +58,7 @@
     sudo chmod a+rw /dev/ttyACM0
     ```
     
-## 本パッケージのインストール
+### 本パッケージのインストール
 ワークスペースのディレクトリを作成し、githubからソースをダウンロードした後、ビルドします。
 また、Arduinoにソースを書き込みます。
     ```
@@ -78,45 +82,45 @@
     rosrun onga_arduino write_cmd2pwm.sh
     ```
     
-## パッケージ内容
-### ・onga_arduino
+## パッケージ概要編
+### onga_arduino
 ArduinoによるPWM出力制御パッケージ \
 ボードへの書き込み機能、書き込むソースを含む
 
-### ・onga_control
+### onga_control
 機体制御用パッケージ \
 ロボットのコントロール起動用スクリプト、コントロール用設定ファイル、リモコン制御等を含む
 
-### ・onga_description
+### onga_description
 Gazeboシミュレーション用の機体仕様パッケージ \
 ロボットの座標リンク定義ファイルを含む
 
-### ・onga_exp
+### onga_exp
 実験用パッケージ \
 bringupやテスト用の各種実験用スクリプトを含む
 
-### ・onga_gazebo
+### onga_gazebo
 Gazeboシミュレーション制御パッケージ
 
-### ・onga_navigation
+### onga_navigation
 ナビゲーションシステムパッケージ \
 move_base設定ファイルを含む
 
-### ・onga_perception
+### onga_perception
 センサ処理等のロボット知覚に関するパッケージ \
 Arucoマーカーの検出やホームポジション座標のpublish機能を含む
 
-### ・onga_viz
+### onga_viz
 Rvizによる描画パッケージ
 
-## パッケージの使い方
+## 実行編
 ### Gazeboシミュレーション
 Huskyの機体のみ対応しています。 \
 ・Gazebo空間生成 \
 ・RVizにて可視化 \
 ・機体のコントロール 
 ```
-roslaunch onga_control sim_full.launch
+roslaunch onga_gazebo sim_full.launch
 ```
 
 ### Osoyooロボットを動かす
