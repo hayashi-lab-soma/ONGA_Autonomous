@@ -12,9 +12,7 @@
         <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
     </include>
     
-    <include file="$(find onga_viz)/launch/view_robot.launch" >
-        <arg name="mode" default="$(arg mode)"/>
-    </include>
+    <include file="$(find onga_viz)/launch/view_robot.launch" />
     <include file="$(find onga_navigation)/launch/move_base_mapless_demo.launch" >
         <arg name="mode" value="$(arg mode)"/>
     </include>
