@@ -1,21 +1,20 @@
 # ONGA_Autonomous
 壁面吸引ロボット自律化に関するROSパッケージ \
-最終更新日：2022/05/19
-
-## Topics
+最終更新日：2022/06/09
+# Topics
 - 環境構築編
 - パッケージ概要編
 - 実行編
 
-## 環境構築編
-### 要求要件
+# 環境構築編
+## 要求要件
 - Intel Realsense D435i
 - Intel Realsense T265
 - Ubuntu18.04
 - ROS melodic
 - RealsenseSDK 2.0 
 
-### 外部パッケージ、必要なツールのインストール
+## 外部パッケージ、必要なツールのインストール
 - catkin buildのインストール
     ```
     sudo apt update
@@ -58,7 +57,7 @@
     sudo chmod a+rw /dev/ttyACM0
     ```
     
-### 本パッケージのインストール
+## 本パッケージのインストール
 ワークスペースのディレクトリを作成し、githubからソースをダウンロードした後、ビルドします。
 また、Arduinoにソースを書き込みます。
     ```
@@ -82,39 +81,39 @@
     rosrun onga_arduino write_cmd2pwm.sh
     ```
     
-## パッケージ概要編
-### onga_arduino
+# パッケージ概要編
+## onga_arduino
 ArduinoによるPWM出力制御パッケージ \
 ボードへの書き込み機能、書き込むソースを含む
 
-### onga_control
+## onga_control
 機体制御用パッケージ \
 ロボットのコントロール起動用スクリプト、コントロール用設定ファイル、リモコン制御等を含む
 
-### onga_description
+## onga_description
 Gazeboシミュレーション用の機体仕様パッケージ \
 ロボットの座標リンク定義ファイルを含む
 
-### onga_exp
+## onga_exp
 実験用パッケージ \
 bringupやテスト用の各種実験用スクリプトを含む
 
-### onga_gazebo
+## onga_gazebo
 Gazeboシミュレーション制御パッケージ
 
-### onga_navigation
+## onga_navigation
 ナビゲーションシステムパッケージ \
 move_base設定ファイルを含む
 
-### onga_perception
+## onga_perception
 センサ処理等のロボット知覚に関するパッケージ \
 Arucoマーカーの検出やホームポジション座標のpublish機能を含む
 
-### onga_viz
+## onga_viz
 Rvizによる描画パッケージ
 
-## 実行編
-### Gazeboシミュレーション
+# 実行編
+## Gazeboシミュレーション
 Huskyの機体のみ対応しています。 \
 ・Gazebo空間生成 \
 ・RVizにて可視化 \
@@ -123,7 +122,7 @@ Huskyの機体のみ対応しています。 \
 roslaunch onga_gazebo sim_full.launch
 ```
 
-### Osoyooロボットを動かす
+## Osoyooロボットを動かす
 RealsenseとArduinoをPCに接続してないと動作しません。
 ```
 roslaunch onga_exp bringup.launch
